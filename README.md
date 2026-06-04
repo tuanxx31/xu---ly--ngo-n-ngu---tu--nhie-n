@@ -45,7 +45,8 @@ Dự án đã được tổ chức lại theo Clean Architecture ở mức vừa
 │   └── sample_dataset.py            # Bộ dữ liệu mẫu
 ├── presentation/
 │   └── tkinter_app.py               # Giao diện Tkinter
-├── topic_suggestion_app.py          # File chạy chính, lắp các thành phần lại với nhau
+├── main.py                          # File chạy chính, lắp các thành phần lại với nhau
+├── topic_suggestion_app.py          # Wrapper tương thích, gọi lại main.py
 ├── topic_analysis_core.py           # Wrapper tương thích với cách import cũ
 ├── topic_suggestion_ui.py           # Wrapper tương thích với cách import cũ
 ├── requirements.txt
@@ -67,7 +68,7 @@ Luồng phụ thuộc chính:
 presentation -> application -> domain
 infrastructure -> application/domain
 data -> domain
-topic_suggestion_app.py -> lắp tất cả thành app chạy được
+main.py -> lắp tất cả thành app chạy được
 ```
 
 ## Gợi ý phân chia nhiệm vụ nhóm
@@ -76,7 +77,7 @@ topic_suggestion_app.py -> lắp tất cả thành app chạy được
 - Thành viên 2: phụ trách `application/topic_analyzer.py`, giải thích thuật toán Bag of Words, Cosine Similarity, Keyword Weighting, Phrase Matching, Context Bonus và Conflict Penalty.
 - Thành viên 3: phụ trách `presentation/tkinter_app.py`, trình bày giao diện, nhập văn bản, hiển thị kết quả, xem dữ liệu mẫu và lịch sử.
 - Thành viên 4: phụ trách `infrastructure/json_history_repository.py` và `infrastructure/document_reader.py`, giải thích cách lưu lịch sử vào `analysis_history.json` và cách import file văn bản.
-- Khi báo cáo tổng thể, dùng `topic_suggestion_app.py` để giải thích cách các phần được khởi tạo và kết nối với nhau.
+- Khi báo cáo tổng thể, dùng `main.py` để giải thích cách các phần được khởi tạo và kết nối với nhau.
 
 ## Cách chạy dự án
 
@@ -97,10 +98,16 @@ pip install -r requirements.txt
 Chạy ứng dụng bằng lệnh:
 
 ```bash
-python3 topic_suggestion_app.py
+python3 main.py
 ```
 
 Sau khi chạy, cửa sổ ứng dụng sẽ mở ra. Nhập một đoạn văn bản tiếng Việt ngắn rồi bấm **Phân tích ngay**.
+
+Lệnh cũ vẫn chạy được:
+
+```bash
+python3 topic_suggestion_app.py
+```
 
 ## Cách hệ thống hoạt động
 
