@@ -80,7 +80,6 @@ class TopicSuggestionApp:
         header = ttk.Frame(main, style="App.TFrame")
         header.pack(fill="x", pady=(0, 16))
         ttk.Label(header, text="Gợi ý chủ đề bài viết ngắn", style="Title.TLabel").pack(anchor="w")
-        ttk.Label(header, text="Đơn giản • Dễ dùng • Có giải thích thuật toán • Không dùng thư viện ML/NLP có sẵn", style="Subtitle.TLabel").pack(anchor="w", pady=(4, 0))
 
         content = ttk.Frame(main, style="App.TFrame")
         content.pack(fill="both", expand=True)
