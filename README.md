@@ -45,8 +45,6 @@ Dự án đã được tổ chức lại theo Clean Architecture ở mức vừa
 ├── presentation/
 │   └── tkinter_app.py               # Giao diện Tkinter
 ├── topic_suggestion_app.py          # File chạy chính, lắp các thành phần lại với nhau
-├── topic_analysis_core.py           # Facade tương thích cho code cũ
-├── topic_suggestion_ui.py           # Facade tương thích cho code cũ
 ├── requirements.txt
 ├── analysis_history.json
 └── README.md
@@ -76,17 +74,6 @@ topic_suggestion_app.py -> lắp tất cả thành app chạy được
 - Thành viên 3: phụ trách `presentation/tkinter_app.py`, trình bày giao diện, nhập văn bản, hiển thị kết quả, xem dữ liệu mẫu và lịch sử.
 - Thành viên 4: phụ trách `infrastructure/json_history_repository.py`, giải thích cách lưu lịch sử phân tích vào `analysis_history.json`.
 - Khi báo cáo tổng thể, dùng `topic_suggestion_app.py` để giải thích cách các phần được khởi tạo và kết nối với nhau.
-
-## Cấu trúc file cũ và mới
-
-```text
-.
-├── topic_suggestion_app.py     # File chạy chính
-├── topic_suggestion_ui.py      # File tương thích, trỏ sang presentation/tkinter_app.py
-└── topic_analysis_core.py      # File tương thích, trỏ sang các tầng mới
-```
-
-Hai file `topic_suggestion_ui.py` và `topic_analysis_core.py` được giữ lại để tránh lỗi nếu code cũ vẫn import theo tên cũ. Logic chính hiện nằm trong các thư mục theo kiến trúc mới.
 
 ## Cách chạy dự án
 
