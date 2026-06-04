@@ -4,7 +4,7 @@ APP_TITLE = "HỆ THỐNG GỢI Ý CHỦ ĐỀ BÀI VIẾT NGẮN"
 HISTORY_FILE = "analysis_history.json"
 MIN_WORDS_REQUIRED = 5
 
-TOPICS = ["Công nghệ", "Giáo dục", "Sức khỏe", "Thể thao"]
+TOPICS = ["Công nghệ", "Giáo dục", "Sức khỏe", "Thể thao", "Kinh tế", "Ẩm thực", "Văn hóa - Nghệ thuật"]
 
 STOPWORDS = {
     "là", "và", "của", "có", "trong", "một", "những", "các", "cho", "với",
@@ -72,6 +72,54 @@ TOPIC_CONFIG = {
             "trận đấu": 3.0, "ghi bàn": 3.0, "sân vận động": 3.0,
             "huấn luyện viên": 3.0, "đội bóng": 3.0, "vận động viên": 3.0,
             "chiến thuật pressing": 3.0, "đội hình thi đấu": 3.0,
+        },
+    },
+    "Kinh tế": {
+        "keywords": {
+            "thị trường": 2.0, "cổ phiếu": 2.0, "lạm phát": 2.0, "lãi suất": 2.0,
+            "doanh thu": 2.0, "đầu tư": 2.0, "ngân hàng": 2.0, "xuất khẩu": 2.0,
+            "nhập khẩu": 2.0, "ngoại tệ": 2.0, "gdp": 2.0, "tài chính": 2.0,
+            "kinh doanh": 1.5, "lợi nhuận": 2.0, "vốn": 1.5, "chứng khoán": 2.0,
+            "doanh nghiệp": 1.5, "thuế": 1.5, "ngân sách": 2.0, "kinh tế": 1.0,
+            "thương mại": 2.0, "tiền tệ": 2.0, "trái phiếu": 2.0, "bất động sản": 2.0,
+        },
+        "strong_phrases": {
+            "thị trường chứng khoán": 3.0, "tăng trưởng kinh tế": 3.0,
+            "chính sách tiền tệ": 3.0, "lãi suất ngân hàng": 3.0,
+            "tỷ giá ngoại tệ": 3.0, "cán cân thương mại": 3.0,
+            "đầu tư nước ngoài": 3.0, "ngân sách nhà nước": 3.0,
+        },
+    },
+    "Ẩm thực": {
+        "keywords": {
+            "món ăn": 2.0, "nấu ăn": 2.0, "đầu bếp": 2.0, "gia vị": 2.0,
+            "thực phẩm": 1.5, "nguyên liệu": 2.0, "nhà hàng": 2.0, "hương vị": 2.0,
+            "công thức": 2.0, "nêm nếm": 2.0, "chế biến": 2.0, "thực đơn": 2.0,
+            "quán ăn": 2.0, "đặc sản": 2.0, "bánh": 1.5, "nước chấm": 2.0,
+            "xào": 1.5, "luộc": 1.5, "nướng": 1.5, "chiên": 1.5,
+            "bếp": 1.5, "phở": 2.0, "bún": 1.5, "canh": 1.5,
+        },
+        "strong_phrases": {
+            "ẩm thực đường phố": 3.0, "nguyên liệu tươi sống": 3.0,
+            "món ăn truyền thống": 3.0, "công thức nấu ăn": 3.0,
+            "đặc sản vùng miền": 3.0, "nghệ thuật ẩm thực": 3.0,
+            "hương vị đặc trưng": 3.0, "chế biến món ăn": 3.0,
+        },
+    },
+    "Văn hóa - Nghệ thuật": {
+        "keywords": {
+            "nghệ sĩ": 2.0, "ca sĩ": 2.0, "phim": 1.5, "sân khấu": 2.0,
+            "triển lãm": 2.0, "tranh": 1.5, "âm nhạc": 2.0, "hội họa": 2.0,
+            "diễn viên": 2.0, "nhạc sĩ": 2.0, "đạo diễn": 2.0, "kịch": 2.0,
+            "thơ": 1.5, "văn học": 2.0, "điện ảnh": 2.0, "ca khúc": 2.0,
+            "biểu diễn": 2.0, "lễ hội": 2.0, "di sản": 2.0, "múa": 1.5,
+            "truyền thống": 1.0, "tác phẩm": 2.0, "nhà văn": 2.0, "nhạc cụ": 2.0,
+        },
+        "strong_phrases": {
+            "nghệ thuật đương đại": 3.0, "lễ hội văn hóa": 3.0,
+            "di sản văn hóa": 3.0, "sân khấu kịch": 3.0,
+            "điện ảnh việt nam": 3.0, "triển lãm nghệ thuật": 3.0,
+            "âm nhạc truyền thống": 3.0, "văn hóa dân gian": 3.0,
         },
     },
 }

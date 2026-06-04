@@ -1,439 +1,383 @@
-# 🧠 Phân loại chủ đề bài viết tiếng Việt bằng kỹ thuật NLP
+# Phân Tích Kỹ Thuật NLP Trong Source Code
 
----
+## Tổng Quan Hệ Thống
 
-> ## 📣 BÁO CÁO NHANH
->
-> Dự án của em xây dựng một **hệ thống phân loại chủ đề văn bản tiếng Việt**, giải quyết bài toán **Text Classification** — nhận vào một đoạn văn bản bất kỳ và tự động xác định nó thuộc chủ đề nào trong 4 chủ đề: **Công nghệ, Giáo dục, Sức khỏe, Thể thao**.
->
-> Toàn bộ thuật toán được **viết thủ công bằng Python thuần**, không sử dụng bất kỳ thư viện Machine Learning hay NLP có sẵn nào (không scikit-learn, không NLTK, không spaCy).
->
-> **Quy trình xử lý** gồm 3 giai đoạn chính:
->
-> - **Tiền xử lý:** Chuẩn hóa chữ thường → Làm sạch ký tự đặc biệt (regex hỗ trợ dấu tiếng Việt) → Tách từ theo khoảng trắng → Loại bỏ 62 từ dừng tiếng Việt → Trích xuất cụm N-gram (2, 3, 4 từ) để bắt các từ ghép như "trí tuệ nhân tạo", "phác đồ điều trị".
-> - **Biểu diễn & so sánh:** Dùng **Bag of Words** chuyển văn bản thành vector tần suất từ, rồi tính **Cosine Similarity** giữa vector đó với hồ sơ (profile) của 4 chủ đề đã xây từ 40 câu mẫu.
-> - **Chấm điểm tổng hợp:** Kết hợp Cosine Similarity + điểm từ khóa có trọng số + điểm cụm từ đặc trưng + bonus ngữ cảnh − phạt tín hiệu nhiễu (Conflict Penalty). Chủ đề có tổng điểm cao nhất là kết quả dự đoán. Hệ thống còn tự đánh giá **mức độ tin cậy** (Cao / Trung bình / Thấp) dựa trên khoảng cách điểm giữa chủ đề nhất và nhì, đồng thời sinh **giải thích** tự động bằng tiếng Việt.
->
-> **Công thức:** `Final_Score = Cosine + Keyword + Phrase + Context − Penalty`
+Đây là hệ thống **phân loại chủ đề văn bản tiếng Việt** (Text Classification) cho 4 chủ đề: Công nghệ, Giáo dục, Sức khỏe, Thể thao. Hệ thống sử dụng phương pháp **rule-based kết hợp thống kê**, không dùng machine learning hay deep learning.
 
----
-
-## 1. Giới thiệu dự án
-
-Hệ thống nhận vào một đoạn văn bản tiếng Việt bất kỳ, sau đó **tự động xác định chủ đề** của đoạn văn đó thuộc 1 trong 4 nhóm:
-
-| Chủ đề               | Ví dụ văn bản                                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------- |
-| 🖥**Công nghệ** | *"Lập trình viên sử dụng Python để xây dựng API kết nối cơ sở dữ liệu."*            |
-| 📚**Giáo dục**  | *"Giáo viên chuẩn bị bài giảng mới để học sinh tiếp cận kiến thức."*                 |
-| 🏥**Sức khỏe**  | *"Bác sĩ khuyến cáo người dân khám bệnh định kỳ để phát hiện sớm triệu chứng."* |
-| ⚽**Thể thao**   | *"Huấn luyện viên điều chỉnh chiến thuật để cầu thủ kiểm soát thế trận."*          |
-
-**Điểm đặc biệt:** Toàn bộ thuật toán được viết thủ công bằng Python thuần — **không dùng bất kỳ thư viện Machine Learning hay NLP có sẵn** nào (không scikit-learn, không NLTK, không spaCy).
-
----
-
-## 2. Bài toán đang giải quyết
-
-|                                  |                                                          |
-| -------------------------------- | -------------------------------------------------------- |
-| **Tên bài toán**        | Phân loại văn bản (Text Classification)              |
-| **Đầu vào**             | Một đoạn văn bản tiếng Việt (≥ 5 từ)            |
-| **Đầu ra**               | Chủ đề phù hợp nhất + mức tin cậy + giải thích |
-| **Số lớp**               | 4 (Công nghệ, Giáo dục, Sức khỏe, Thể thao)       |
-| **Dữ liệu huấn luyện** | 40 câu mẫu đã gán nhãn (10 câu/chủ đề)         |
-
----
-
-## 3. Tổng quan quy trình xử lý
+### Công thức tính điểm tổng hợp:
 
 ```
-  Văn bản người dùng nhập vào
-              │
-              ▼
-  ┌───────────────────────────┐
-  │   TIỀN XỬ LÝ VĂN BẢN    │  Chuẩn hóa → Làm sạch → Tách từ → Bỏ stopwords → Tạo N-gram
-  └─────────────┬─────────────┘
-                ▼
-  ┌───────────────────────────┐
-  │   BIỂU DIỄN VĂN BẢN     │  Bag of Words: chuyển text thành vector số
-  └─────────────┬─────────────┘
-                ▼
-  ┌───────────────────────────┐
-  │   CHẤM ĐIỂM TỪNG CHỦ ĐỀ │  Cosine Similarity + Keyword Score + Phrase Score + Context − Penalty
-  └─────────────┬─────────────┘
-                ▼
-  ┌───────────────────────────┐
-  │   KẾT QUẢ DỰ ĐOÁN       │  Chủ đề điểm cao nhất → kết quả + xác suất + giải thích
-  └───────────────────────────┘
+final_score = cosine_score + keyword_score + phrase_score + context_bonus - conflict_penalty
+```
+
+Chủ đề có `final_score` cao nhất sẽ được chọn làm kết quả dự đoán.
+
+---
+
+## 1. Text Preprocessing Pipeline (Tiền xử lý văn bản)
+
+> **IMPORTANT**: Đây là bước nền tảng — mọi kỹ thuật NLP phía sau đều phụ thuộc vào kết quả tiền xử lý.
+
+### Quy trình 5 bước
+
+Được orchestrate tại `application/topic_analyzer.py` → hàm `preprocess_text()` (dòng 60–72):
+
+```
+Văn bản gốc → 1. Normalize (lowercase) → 2. Clean (loại ký tự đặc biệt) → 3. Tokenize (tách từ) → 4. Remove Stopwords (loại từ dừng)
+                                                                           ↘ 5. Extract Phrases (trích cụm n-gram)
 ```
 
 ---
 
-## 4. Chi tiết các kỹ thuật NLP sử dụng
+### 1.1 Text Normalization (Chuẩn hóa văn bản)
+
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Lowercasing |
+| **Vị trí** | `application/topic_analyzer.py` → `normalize_text()` (dòng 30–31) |
+
+```python
+def normalize_text(self, text: str) -> str:
+    return text.lower().strip()
+```
+
+**Mục đích**: Đưa toàn bộ văn bản về chữ thường để so khớp không phân biệt hoa/thường. Ví dụ `"AI"` → `"ai"`, `"Python"` → `"python"`.
 
 ---
 
-### 4.1. Chuẩn hóa văn bản (Text Normalization)
+### 1.2 Text Cleaning (Làm sạch văn bản)
 
-**Ý tưởng:** Cùng một từ có thể viết nhiều kiểu khác nhau — "Công Nghệ", "CÔNG NGHỆ", "công nghệ". Nếu không chuẩn hóa, máy sẽ coi đây là 3 từ khác nhau. Bước này đưa tất cả về **một dạng thống nhất** bằng cách chuyển toàn bộ thành chữ thường.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Regex-based cleaning giữ lại ký tự tiếng Việt |
+| **Vị trí** | `application/topic_analyzer.py` → `clean_text()` (dòng 33–41) |
 
-**Cách hoạt động:**
-
+```python
+def clean_text(self, text: str) -> str:
+    text = re.sub(
+        r"[^\w\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]",
+        " ", text,
+    )
+    text = re.sub(r"_", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
 ```
-"  Trí Tuệ NHÂN TẠO  "  →  "trí tuệ nhân tạo"
-```
 
-- Chuyển hoa → thường (`lower`)
-- Xóa khoảng trắng thừa đầu/cuối (`strip`)
+**Mục đích**: Loại bỏ dấu câu, ký tự đặc biệt nhưng **giữ lại toàn bộ dấu tiếng Việt** (à, á, ả, ã, ạ, ă, â, đ, ...). Đây là điểm quan trọng khi xử lý NLP tiếng Việt — regex pattern phải liệt kê rõ ràng các ký tự có dấu.
 
-**Tại sao cần thiết?** Nếu bỏ qua bước này, từ "Bác Sĩ" trong dữ liệu mẫu sẽ không khớp với "bác sĩ" trong văn bản người dùng nhập → hệ thống mất khả năng nhận diện.
+**3 bước regex**:
+1. Thay ký tự không phải chữ/số/khoảng trắng/tiếng Việt bằng dấu cách
+2. Thay dấu gạch dưới `_` bằng dấu cách
+3. Gộp nhiều khoảng trắng liên tiếp thành 1
 
 ---
 
-### 4.2. Làm sạch văn bản (Text Cleaning)
+### 1.3 Tokenization (Tách từ)
 
-**Ý tưởng:** Văn bản thật luôn chứa "rác" — dấu câu (. , ! ?), ký tự đặc biệt (@, #, $), dấu gạch dưới, khoảng trắng nhiều lần. Những thứ này không giúp phân loại chủ đề nên cần loại bỏ, chỉ **giữ lại chữ cái và dấu tiếng Việt**.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Whitespace Tokenization (tách theo khoảng trắng) |
+| **Vị trí** | `application/topic_analyzer.py` → `tokenize()` (dòng 43–46) |
 
-**Cách hoạt động:**
-
+```python
+def tokenize(self, text: str) -> List[str]:
+    if not text:
+        return []
+    return [token for token in text.split() if token]
 ```
-"Lập trình Python (v3.12), @AI!"  →  "lập trình python v3 12 ai"
-```
 
-- Dùng regex loại bỏ mọi ký tự không phải chữ/số/khoảng trắng
-- Regex được thiết kế **riêng cho tiếng Việt**: giữ lại toàn bộ nguyên âm có dấu (à, á, ạ, ả, ã, â, ă, ơ, ư, đ, ...)
-- Gộp nhiều khoảng trắng liên tiếp thành 1
-
-**Tại sao cần thiết?** Nếu không làm sạch, dấu câu sẽ "dính" vào từ (ví dụ `"bệnh."` ≠ `"bệnh"`) khiến đối sánh từ khóa thất bại.
+> **NOTE**: Đây là tokenizer đơn giản nhất — tách theo khoảng trắng. Tiếng Việt có đặc thù **từ ghép** (ví dụ "trí tuệ nhân tạo" là 1 từ nhưng sẽ bị tách thành 4 token). Source code giải quyết vấn đề này bằng kỹ thuật **N-gram Phrase Extraction** ở bước 5.
 
 ---
 
-### 4.3. Tách từ (Tokenization)
+### 1.4 Stopword Removal (Loại bỏ từ dừng)
 
-**Ý tưởng:** Máy tính không hiểu chuỗi văn bản dạng câu. Để xử lý, ta cần **tách câu thành danh sách các đơn vị nhỏ nhất** gọi là token. Đây là bước nền tảng — tất cả các kỹ thuật phía sau đều làm việc trên danh sách token, không phải trên chuỗi gốc.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Danh sách từ dừng tiếng Việt tĩnh |
+| **Vị trí** | `application/topic_analyzer.py` → `remove_stopwords()` (dòng 48–49) + `domain/topic_config.py` → `STOPWORDS` (dòng 9–17) |
 
-**Cách hoạt động:**
+```python
+STOPWORDS = {
+    "là", "và", "của", "có", "trong", "một", "những", "các", "cho", "với",
+    "được", "khi", "để", "thì", "mà", "này", "đó", "cũng", "rất", "nhiều",
+    "về", "từ", "đang", "trên", "theo", "vào", "ra", "ở", "tại", "do", "vì",
+    "nên", "đã", "sẽ", "cần", "hơn", "giúp", "việc", "mỗi", "như", "hay",
+    "bị", "đến", "cùng", "qua", "lại", "thêm", "nhằm", "sau", "trước",
+    "ít", "vẫn", "đều", "vừa", "mới", "rằng", "thật", "sự", "kia", "ấy",
+    "nơi", "đây",
+}
 
+def remove_stopwords(self, tokens):
+    return [token for token in tokens if token not in STOPWORDS]
 ```
-"lập trình python xây dựng api"  →  ["lập", "trình", "python", "xây", "dựng", "api"]
-```
 
-Hệ thống dùng phương pháp **tách theo khoảng trắng** (whitespace tokenization) — đơn giản nhất, không phụ thuộc thư viện bên ngoài.
-
-**Hạn chế và cách bù trừ:** Tiếng Việt có nhiều **từ ghép** — "học sinh" là 1 từ nhưng bị tách thành 2 token ("học", "sinh"). Hệ thống bù trừ bằng kỹ thuật **N-gram** (mục 4.5) — tự động tạo cụm 2–4 từ liên tiếp để "ghép lại" các từ ghép.
+**Mục đích**: Loại bỏ ~62 từ chức năng tiếng Việt (là, và, của, có, trong, ...) — những từ xuất hiện ở mọi chủ đề, không mang thông tin phân biệt. Dùng `set` nên tra cứu O(1).
 
 ---
 
-### 4.4. Loại bỏ từ dừng (Stopword Removal)
+### 1.5 N-gram Phrase Extraction (Trích xuất cụm từ n-gram)
 
-**Ý tưởng:** Trong bất kỳ ngôn ngữ nào, có một nhóm từ xuất hiện **rất nhiều ở mọi văn bản** mà không mang ý nghĩa phân loại: "là", "và", "của", "có", "trong", "một", "những"... Đây gọi là **stopwords** (từ dừng). Giữ chúng lại chỉ tạo nhiễu — chúng xuất hiện đều ở cả 4 chủ đề nên không giúp phân biệt được gì.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Sliding window N-gram (bigram, trigram, 4-gram) |
+| **Vị trí** | `application/topic_analyzer.py` → `extract_phrases()` (dòng 51–58) |
 
-**Cách hoạt động:**
-
+```python
+def extract_phrases(self, text: str) -> List[str]:
+    cleaned_text = self.clean_text(self.normalize_text(text))
+    tokens = self.tokenize(cleaned_text)
+    phrases = []
+    for size in (2, 3, 4):
+        for index in range(len(tokens) - size + 1):
+            phrases.append(" ".join(tokens[index:index + size]))
+    return phrases
 ```
-["bác", "sĩ", "khuyến", "cáo", "người", "dân", "khám", "bệnh", "để", "phát", "hiện"]
-                                                                    ↑
-                                                             stopword "để" bị loại
-→  ["bác", "sĩ", "khuyến", "cáo", "người", "dân", "khám", "bệnh", "phát", "hiện"]
-```
 
-Hệ thống sử dụng **62 từ dừng tiếng Việt** được chọn thủ công, bao gồm các từ chức năng phổ biến nhất.
+**Mục đích**: Giải quyết bài toán từ ghép tiếng Việt. Sinh ra tất cả cụm 2, 3, 4 từ liên tiếp.
 
-**Tại sao cần thiết?**
+**Ví dụ**: Câu `"trí tuệ nhân tạo giúp"` sẽ sinh ra:
+- Bigram: `"trí tuệ"`, `"tuệ nhân"`, `"nhân tạo"`, `"tạo giúp"`
+- Trigram: `"trí tuệ nhân"`, `"tuệ nhân tạo"`, `"nhân tạo giúp"`
+- 4-gram: `"trí tuệ nhân tạo"`, `"tuệ nhân tạo giúp"`
 
-- Giảm kích thước vector biểu diễn → tính toán nhanh hơn
-- Tăng tỷ trọng cho các từ **thật sự quan trọng** (bác sĩ, lập trình, cầu thủ...)
-- Cải thiện chất lượng Cosine Similarity vì vector không bị "pha loãng" bởi từ vô nghĩa
+Cụm `"trí tuệ nhân tạo"` sau đó sẽ được match với danh sách strong_phrases.
+
+> **TIP**: Kỹ thuật này chạy **trước** bước loại stopwords (dùng `cleaned_text` thay vì `tokens` đã lọc), đảm bảo các cụm từ tự nhiên không bị phá vỡ.
 
 ---
 
-### 4.5. Trích xuất N-gram (N-gram Extraction)
+## 2. Bag-of-Words + Cosine Similarity
 
-**Ý tưởng:** Nhiều khái niệm quan trọng chỉ có ý nghĩa khi đọc **nhiều từ liên tiếp**. Từ đơn lẻ "trí", "tuệ", "nhân", "tạo" không cho biết chủ đề gì, nhưng ghép lại thành **"trí tuệ nhân tạo"** thì chắc chắn thuộc Công nghệ. N-gram bắt được những tín hiệu ngữ nghĩa mạnh mà tokenization đơn thuần bỏ lỡ.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Vector Space Model (VSM) với Cosine Similarity |
+| **Vị trí** | `application/topic_analyzer.py` → `text_to_vector()` (dòng 85–91), `cosine_similarity()` (dòng 93–99), `build_topic_profiles()` (dòng 101–109) |
 
-**N-gram là gì?** Là chuỗi N từ liên tiếp nhau trong văn bản:
+### 2.1 Xây dựng Vocabulary
 
-- **2-gram (bigram):** "bác sĩ", "bài giảng", "trận đấu"
-- **3-gram (trigram):** "trí tuệ nhân", "bài giảng online", "phác đồ điều"
-- **4-gram:** "trí tuệ nhân tạo", "bảo mật thông tin"
+`build_vocabulary()` (dòng 74–83) — quét toàn bộ dataset, thu thập tất cả từ (đã loại stopwords) theo thứ tự xuất hiện đầu tiên, tạo ra vocabulary duy nhất.
 
-**Cách hoạt động:**
+### 2.2 Text → Vector (Bag-of-Words)
 
-Từ câu `"trí tuệ nhân tạo rất mạnh"`, hệ thống tạo ra:
+```python
+def text_to_vector(self, text_or_tokens, vocabulary):
+    token_counter = Counter(tokens)
+    return [token_counter.get(word, 0) for word in vocabulary]
+```
 
-| Loại  | Các N-gram                                                                |
-| ------ | -------------------------------------------------------------------------- |
-| 2-gram | "trí tuệ", "tuệ nhân", "nhân tạo", "tạo rất", "rất mạnh"         |
-| 3-gram | "trí tuệ nhân", "tuệ nhân tạo", "nhân tạo rất", "tạo rất mạnh" |
-| 4-gram | "trí tuệ nhân tạo", "tuệ nhân tạo rất", "nhân tạo rất mạnh"    |
+Chuyển văn bản thành vector đếm tần suất từ, kích thước = kích thước vocabulary. Mỗi phần tử là số lần xuất hiện của từ tương ứng.
 
-Các N-gram này được đối sánh với danh sách **cụm từ đặc trưng** (strong phrases) đã định nghĩa cho mỗi chủ đề. Nếu khớp → cộng điểm mạnh (trọng số 3.0).
+### 2.3 Topic Profile
 
-**Ví dụ cụm từ đặc trưng từng chủ đề:**
+`build_topic_profiles()` (dòng 101–109) — gộp tất cả token của các văn bản cùng chủ đề lại thành 1 "siêu văn bản", rồi chuyển thành vector. Mỗi chủ đề có 1 vector đại diện (centroid).
 
-| Chủ đề   | Cụm từ mạnh                                                                  |
-| ----------- | ------------------------------------------------------------------------------- |
-| Công nghệ | trí tuệ nhân tạo, cơ sở dữ liệu, điện toán đám mây, an ninh mạng |
-| Giáo dục  | học trực tuyến, bài giảng online, phương pháp giảng dạy               |
-| Sức khỏe  | phác đồ điều trị, bác sĩ chuyên khoa, khám bệnh định kỳ           |
-| Thể thao   | đội hình thi đấu, chiến thuật pressing, sân vận động                 |
+### 2.4 Cosine Similarity
+
+```python
+def cosine_similarity(self, vector1, vector2):
+    dot_product = sum(left * right for left, right in zip(vector1, vector2))
+    magnitude1 = math.sqrt(sum(value * value for value in vector1))
+    magnitude2 = math.sqrt(sum(value * value for value in vector2))
+    if magnitude1 == 0 or magnitude2 == 0:
+        return 0.0
+    return dot_product / (magnitude1 * magnitude2)
+```
+
+**Công thức**: `cos(A, B) = (A · B) / (|A| × |B|)`, giá trị từ 0 đến 1.
+
+Đo mức độ tương đồng giữa vector văn bản đầu vào và vector profile của từng chủ đề. Cosine similarity đo **hướng** (phân phối từ) chứ không phụ thuộc **độ dài** văn bản.
 
 ---
 
-### 4.6. Bag of Words (BoW) — Biểu diễn văn bản bằng vector
+## 3. Weighted Keyword Matching (So khớp từ khóa có trọng số)
 
-**Ý tưởng:** Máy tính không hiểu chữ, chỉ hiểu số. **Bag of Words** chuyển văn bản thành một **vector số** bằng cách: xây dựng một từ điển chung, rồi với mỗi văn bản, đếm **số lần xuất hiện** của từng từ trong từ điển. Thứ tự từ bị bỏ qua — chỉ quan tâm "từ nào có" và "bao nhiêu lần".
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Dictionary-based keyword matching với trọng số tĩnh |
+| **Vị trí** | `application/topic_analyzer.py` → `match_weighted_terms()` (dòng 111–123), `calculate_keyword_score()` (dòng 125–128) |
 
-**Cách hoạt động — 3 bước:**
-
-**Bước 1:** Gom tất cả từ (đã bỏ stopwords) từ 40 văn bản mẫu → tạo **từ điển chung** (vocabulary).
-
-```
-Từ điển: ["phòng", "nâng", "cấp", "máy", "tính", "phần", "mềm", "lập", "trình", ...]
-```
-
-**Bước 2:** Với mỗi văn bản, tạo vector có chiều = số từ trong từ điển. Mỗi vị trí = số lần từ đó xuất hiện.
-
-```
-Văn bản: "lập trình phần mềm lập trình"
-                                        máy  tính  phần  mềm  lập  trình  ...
-Vector:                             [    0,    0,    1,    1,    2,    2,  ...]
+```python
+def match_weighted_terms(self, processed_text, weighted_terms):
+    for term, weight in weighted_terms.items():
+        if " " in term:                        # Cụm từ → tìm trong text hoặc phrases
+            if term in cleaned_text or term in phrases:
+                matches.append((term, weight))
+        elif term in tokens:                   # Từ đơn → tìm trong tokens
+            matches.append((term, weight))
+    return matches
 ```
 
-**Bước 3:** Gom vector của tất cả văn bản cùng chủ đề → tạo **hồ sơ chủ đề** (topic profile) — đại diện cho "khuôn mặt" của chủ đề đó trong không gian từ.
+**Cách hoạt động**:
+- Mỗi chủ đề có danh sách `keywords` với trọng số 1.0–2.0
+- Từ đơn (như `"thuốc"`) → tìm trong danh sách token
+- Cụm từ (như `"trí tuệ nhân tạo"`) → tìm trong chuỗi text gốc hoặc danh sách phrases
+- Tổng trọng số các từ khóa matched = `keyword_score`
 
-**Minh họa dạng bảng (rút gọn):**
+**Cấu hình tại** `domain/topic_config.py` → `TOPIC_CONFIG` (dòng 19–77):
 
-| Từ         | Công nghệ | Giáo dục | Sức khỏe | Thể thao |
-| ----------- | :---------: | :--------: | :--------: | :-------: |
-| máy tính  |      3      |     0     |     0     |     0     |
-| phần mềm  |      4      |     0     |     0     |     0     |
-| lập trình |      3      |     0     |     0     |     0     |
-| học sinh   |      0      |     5     |     0     |     0     |
-| bài giảng |      0      |     4     |     0     |     0     |
-| bác sĩ    |      0      |     0     |     3     |     0     |
-| bệnh viện |      0      |     0     |     2     |     0     |
-| cầu thủ   |      0      |     0     |     0     |     4     |
-| trận đấu |      0      |     0     |     0     |     3     |
-
-Nhìn vào bảng thấy rõ: mỗi chủ đề có "vùng" từ riêng. Khi văn bản mới xuất hiện, hệ thống sẽ xem nó giống "vùng" nào nhất.
+| Trọng số | Ý nghĩa | Ví dụ |
+|---|---|---|
+| 2.0 | Từ khóa đặc trưng mạnh | `"lập trình"`, `"bác sĩ"`, `"cầu thủ"` |
+| 1.5 | Từ khóa phổ biến trong chủ đề | `"hệ thống"`, `"rau xanh"`, `"chiến thuật"` |
+| 1.0 | Từ khóa chung, có thể xuất hiện nhiều chủ đề | `"ứng dụng"`, `"bệnh"`, `"sức khỏe"` |
 
 ---
 
-### 4.7. Cosine Similarity — Đo độ tương đồng giữa văn bản và chủ đề
+## 4. Strong Phrase Matching (So khớp cụm từ mạnh)
 
-**Ý tưởng:** Sau khi có vector BoW của văn bản đầu vào và vector hồ sơ của 4 chủ đề, ta cần đo **mức độ giống nhau** giữa chúng. Cosine Similarity đo **góc** giữa 2 vector:
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Phrase-level matching với trọng số cao |
+| **Vị trí** | `application/topic_analyzer.py` → `calculate_phrase_score()` (dòng 130–133) |
 
-- Góc nhỏ (cùng hướng) → cosine ≈ 1 → **rất giống**
-- Vuông góc → cosine = 0 → **không liên quan**
+Tương tự keyword matching nhưng dùng danh sách `strong_phrases` — đều có trọng số **3.0**, cao hơn từ đơn. Các cụm từ này gần như chắc chắn thuộc một chủ đề cụ thể.
 
-**Công thức:**
-
-```
-                      A · B                  Σ (Aᵢ × Bᵢ)
-cos(θ)  =  ─────────────────  =  ─────────────────────────────
-               ‖A‖ × ‖B‖        √(Σ Aᵢ²)  ×  √(Σ Bᵢ²)
-```
-
-Trong đó:
-
-- `A · B` = tích vô hướng (nhân từng phần tử tương ứng rồi cộng lại)
-- `‖A‖` = độ dài vector A (căn bậc 2 của tổng bình phương)
-
-**Tại sao dùng Cosine mà không dùng Euclidean (khoảng cách thông thường)?**
-
-Cosine **không bị ảnh hưởng bởi độ dài văn bản**. Ví dụ: bài 10 từ về Công nghệ và bài 100 từ về Công nghệ sẽ cho cosine tương tự nhau (vì cùng hướng), nhưng khoảng cách Euclidean sẽ rất xa (vì tần suất chênh lệch lớn).
-
-**Ví dụ kết quả:**
-
-```
-Văn bản: "Nhóm lập trình phát triển phần mềm bằng thuật toán tối ưu"
-
-Cosine với Công nghệ : 0.3842  ← cao nhất → gần nhất
-Cosine với Giáo dục  : 0.0512
-Cosine với Sức khỏe  : 0.0210
-Cosine với Thể thao  : 0.0000
-```
+**Ví dụ strong_phrases**:
+- Công nghệ: `"trí tuệ nhân tạo"`, `"cơ sở dữ liệu"`, `"an ninh mạng"`
+- Giáo dục: `"học trực tuyến"`, `"phương pháp giảng dạy"`
+- Sức khỏe: `"phác đồ điều trị"`, `"bác sĩ chuyên khoa"`
+- Thể thao: `"chiến thuật pressing"`, `"đội hình thi đấu"`
 
 ---
 
-### 4.8. Chấm điểm từ khóa có trọng số (Weighted Keyword Scoring)
+## 5. Conflict Penalty (Phạt xung đột chủ đề)
 
-**Ý tưởng:** Cosine Similarity đo tổng thể dựa trên tần suất từ, nhưng có những từ/cụm từ là **dấu hiệu cực mạnh** cho 1 chủ đề cụ thể. Gặp "phác đồ điều trị" thì gần như chắc chắn là Sức khỏe. Gặp "sân vận động" thì gần như chắc chắn là Thể thao. Hệ thống bổ sung thêm điểm dựa trên **danh sách từ khóa có trọng số** đã thiết kế riêng cho từng chủ đề.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Cross-topic penalty with signal-based scaling |
+| **Vị trí** | `application/topic_analyzer.py` → `calculate_conflict_penalty()` (dòng 135–190) |
 
-**Cách hoạt động:**
+> **IMPORTANT**: Đây là kỹ thuật phức tạp nhất trong hệ thống, xử lý trường hợp văn bản chứa từ khóa của **nhiều chủ đề khác nhau**.
 
-Mỗi chủ đề có 2 loại danh sách:
-
-**① Từ khóa (keywords)** — trọng số 1.0 đến 2.0:
-
-```
-Công nghệ: máy tính (2.0), phần mềm (2.0), internet (1.0), dữ liệu (2.0), ...
-Sức khỏe:  bác sĩ (2.0), thuốc (2.0), điều trị (2.0), dinh dưỡng (2.0), ...
-```
-
-**② Cụm từ mạnh (strong phrases)** — trọng số 3.0:
+**Thuật toán**:
 
 ```
-Công nghệ: "trí tuệ nhân tạo" (3.0), "cơ sở dữ liệu" (3.0), ...
-Thể thao:  "huấn luyện viên" (3.0), "đội hình thi đấu" (3.0), ...
+Với mỗi chủ đề X đang xét:
+  1. Tìm keyword/phrase match của X (own_keywords, own_phrases)
+  2. Duyệt các chủ đề khác Y ≠ X:
+     a. Tìm keyword/phrase match của Y trong văn bản
+     b. Nếu từ đó cũng thuộc X → Bỏ qua (không phạt)
+     c. Nếu từ chỉ thuộc Y:
+        - Keyword trọng số ≥ 2.0 → penalty += 0.75
+        - Keyword trọng số < 2.0 → penalty += 0.50
+        - Cụm từ mạnh → penalty += 1.0
+  3. Điều chỉnh penalty theo own_signal:
+     - own_signal = len(own_keywords) + 2 × len(own_phrases)
+     - own_signal ≥ 3 → penalty × 0.6
+     - own_signal ≥ 1 → penalty × 0.8
+     - own_signal = 0 → penalty giữ nguyên
 ```
 
-Khi phân tích, hệ thống duyệt qua văn bản → nếu tìm thấy từ khóa/cụm từ nào → **cộng trọng số tương ứng** vào điểm.
-
-**③ Context Bonus (điểm cộng ngữ cảnh):**
-
-Khi phát hiện **tổ hợp từ khóa đặc biệt** cùng xuất hiện, hệ thống cộng thêm bonus:
-
-| Chủ đề   | Điều kiện                                           | Bonus |
-| ----------- | ------------------------------------------------------ | ----- |
-| Công nghệ | Chứa "trí tuệ nhân tạo" hoặc "cơ sở dữ liệu" | +1.8  |
-| Công nghệ | Chứa cả "phần mềm" VÀ "hệ thống"                | +1.0  |
-| Giáo dục  | Chứa "học trực tuyến" hoặc "bài giảng online"   | +1.8  |
-| Sức khỏe  | Chứa cả "bác sĩ" VÀ "bệnh viện"                 | +1.0  |
-| Thể thao   | Chứa "trận đấu" hoặc "ghi bàn"                   | +1.8  |
+**Điểm đặc biệt**:
+- Nếu 1 từ thuộc **cả chủ đề đang xét lẫn chủ đề khác** → không bị phạt (tránh phạt nhầm)
+- `own_signal` — nếu chủ đề đang xét có **nhiều tín hiệu riêng** thì penalty giảm (×0.6), vì hệ thống tin rằng chủ đề đó đủ mạnh
+- Keyword trọng số cao (≥2.0) bị phạt nặng hơn (0.75 vs 0.50)
 
 ---
 
-### 4.9. Phạt tín hiệu nhiễu (Conflict Penalty)
+## 6. Context Priority Boosting (Tăng cường theo ngữ cảnh)
 
-**Ý tưởng:** Một văn bản thực tế có thể chứa từ khóa của **nhiều chủ đề** cùng lúc. Ví dụ:
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Rule-based context boost |
+| **Vị trí** | `application/topic_analyzer.py` → `apply_context_priority()` (dòng 192–221) |
 
-> *"Bác sĩ sử dụng **phần mềm** để quản lý **bệnh nhân**"*
->
-> - "bác sĩ", "bệnh nhân" → Sức khỏe
-> - "phần mềm" → Công nghệ
+Hand-crafted rules để boost điểm khi phát hiện **tổ hợp từ khóa/cụm từ đặc trưng**:
 
-Nếu không xử lý, cả 2 chủ đề đều được cộng điểm và kết quả có thể bị sai. **Conflict Penalty** giải quyết bằng cách: khi chấm điểm cho chủ đề A, nếu phát hiện văn bản chứa từ khóa đặc trưng của chủ đề B, C, D → **trừ điểm** (penalty).
-
-**Cách hoạt động:**
-
-```
-Đang chấm điểm cho "Sức khỏe":
-  → Tìm thấy "phần mềm" thuộc Công nghệ mà KHÔNG thuộc Sức khỏe
-  → Phạt: -0.5 điểm (hoặc -0.75 nếu trọng số ≥ 2.0)
-  → Tìm thấy "cơ sở dữ liệu" (cụm từ mạnh) thuộc Công nghệ
-  → Phạt: -1.0 điểm
+```python
+if topic == "Giáo dục":
+    if "học trực tuyến" in phrase_set or "bài giảng online" in phrase_set:
+        boost += 1.8
+    if "lớp học" in phrase_set and "bài giảng" in phrase_set:
+        boost += 1.2
 ```
 
-**Cơ chế thông minh — giảm nhẹ penalty:**
-
-- Nếu chủ đề đang xét có **≥ 3 tín hiệu riêng** → penalty chỉ tính 60% (vì chủ đề chính đã rõ, không sợ nhiễu)
-- Nếu có **≥ 1 tín hiệu** → penalty tính 80%
-- Nếu không có tín hiệu riêng → penalty tính nguyên 100%
-
-Điều này tránh trường hợp phạt quá nặng khi chủ đề chính rõ ràng nhưng có nhắc thoáng qua chủ đề khác.
+**Ý tưởng**: Một từ đơn lẻ có thể mơ hồ, nhưng **sự kết hợp** nhiều từ khóa đặc trưng là tín hiệu rất mạnh. Ví dụ: `"bác sĩ"` + `"bệnh viện"` cùng xuất hiện → gần chắc chắn là Sức khỏe.
 
 ---
 
-### 4.10. Đánh giá độ tin cậy (Confidence Assessment)
+## 7. Confidence Assessment (Đánh giá độ tin cậy)
 
-**Ý tưởng:** Hệ thống không chỉ trả lời "chủ đề là gì" mà còn tự đánh giá **"kết quả có đáng tin không"** bằng cách xem **khoảng cách** giữa điểm của chủ đề cao nhất và chủ đề cao thứ nhì. Nếu 2 chủ đề điểm sát nhau → kết quả không chắc chắn.
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Gap-ratio based confidence scoring |
+| **Vị trí** | `application/topic_analyzer.py` → `assess_confidence()` (dòng 223–239) |
 
-**Cách hoạt động:**
-
+```python
+gap_ratio = abs(top_score - second_score) / max(abs(top_score), 0.0001)
 ```
-gap_ratio = |điểm_cao_nhất − điểm_cao_nhì| / |điểm_cao_nhất|
-```
 
-| Khoảng cách |      Mức tin cậy      | Ý nghĩa                                                                  |
-| ------------- | :---------------------: | -------------------------------------------------------------------------- |
-| < 10%         |    🔴**Thấp**    | Hai chủ đề điểm gần bằng nhau — văn bản mang tính đa chủ đề |
-| 10% – 25%    | 🟡**Trung bình** | Có xu hướng rõ nhưng vẫn còn tín hiệu cạnh tranh                 |
-| > 25%         |     🟢**Cao**     | Chủ đề chiến thắng vượt trội — kết quả đáng tin               |
-
-**Ví dụ:**
-
-```
-Công nghệ: 8.50 điểm  ← cao nhất
-Giáo dục : 1.20 điểm  ← cao nhì
-
-gap = |8.50 − 1.20| / 8.50 = 85.9%  →  Mức tin cậy: 🟢 Cao
-```
+| Gap Ratio | Kết quả |
+|---|---|
+| < 0.10 | **Thấp** — khoảng cách quá nhỏ, có thể nhầm |
+| 0.10 – 0.25 | **Trung bình** |
+| > 0.25 | **Cao** — chủ đề top vượt trội |
 
 ---
 
-## 5. Công thức tính điểm tổng hợp
+## 8. Relative Percentage (Phần trăm tương đối)
 
-Toàn bộ hệ thống chấm điểm cho **mỗi chủ đề** được gói trong 1 công thức:
+| Thuộc tính | Giá trị |
+|---|---|
+| **Kỹ thuật** | Min-shifted score normalization |
+| **Vị trí** | `application/topic_analyzer.py` → `calculate_relative_percentages()` (dòng 241–256) |
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                                                                      │
-│  Final_Score  =  Cosine_Similarity                                   │
-│               +  Keyword_Score        (tổng trọng số từ khóa khớp)   │
-│               +  Phrase_Score         (tổng trọng số cụm từ khớp)    │
-│               +  Context_Bonus        (bonus tổ hợp từ đặc biệt)    │
-│               −  Conflict_Penalty     (phạt tín hiệu từ chủ đề khác)│
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
+```python
+minimum_score = min(score for _, score in sorted_scores)
+shifted_scores = [(topic, score - minimum_score + 0.001) for topic, score in sorted_scores]
 ```
 
-→ Tính cho tất cả 4 chủ đề → Chủ đề nào **Final_Score cao nhất** → kết quả dự đoán.
-
-**Xác suất tương đối:** Điểm 4 chủ đề được dịch (shift) về dương rồi chuẩn hóa về tổng = 100% để hiển thị dạng biểu đồ phần trăm.
+Dịch tất cả điểm lên sao cho điểm thấp nhất → 0.001, rồi tính tỷ lệ phần trăm. Giúp hiển thị kết quả trực quan cho người dùng.
 
 ---
 
-## 6. Ví dụ minh họa toàn bộ quy trình
+## 9. Pipeline Tổng Hợp
 
-### Đầu vào
-
-> *"Lập trình viên sử dụng Python để xây dựng API kết nối cơ sở dữ liệu với nền tảng thương mại điện tử."*
-
-### Bước 1–4: Tiền xử lý
-
-| Giai đoạn   | Kết quả                                                                                                                                                                                             |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chuẩn hóa   | `"lập trình viên sử dụng python để xây dựng api kết nối cơ sở dữ liệu với nền tảng thương mại điện tử"`                                                                     |
-| Làm sạch    | `"lập trình viên sử dụng python để xây dựng api kết nối cơ sở dữ liệu với nền tảng thương mại điện tử"`                                                                     |
-| Tách từ     | `["lập", "trình", "viên", "sử", "dụng", "python", "để", "xây", "dựng", "api", "kết", "nối", "cơ", "sở", "dữ", "liệu", "với", "nền", "tảng", "thương", "mại", "điện", "tử"]` |
-| Bỏ stopwords | `["lập", "trình", "viên", "sử", "dụng", "python", "xây", "dựng", "api", "kết", "nối", "cơ", "sở", "dữ", "liệu", "nền", "tảng", "thương", "mại", "điện", "tử"]`                 |
-
-### Bước 5: Trích N-gram
-
-Một số N-gram quan trọng được tạo ra:
-
-- `"cơ sở"`, `"sở dữ"`, `"dữ liệu"` (2-gram)
-- `"cơ sở dữ"`, `"sở dữ liệu"` (3-gram)
-- `"cơ sở dữ liệu"` (4-gram) → **khớp strong_phrases Công nghệ!**
-
-### Bước 6–7: Chấm điểm
-
-| Thành phần          |   Công nghệ   |   Giáo dục   |   Sức khỏe   |   Thể thao   |
-| --------------------- | :-------------: | :------------: | :------------: | :------------: |
-| Cosine Similarity     |      0.38      |      0.05      |      0.02      |      0.00      |
-| Keyword Score         |      +8.0      |      0.0      |      0.0      |      0.0      |
-| Phrase Score          |      +6.0      |      0.0      |      0.0      |      0.0      |
-| Context Bonus         |      +1.8      |      0.0      |      0.0      |      0.0      |
-| Conflict Penalty      |      −0.0      |     −0.0     |     −0.0     |     −0.0     |
-| **Final Score** | **16.18** | **0.05** | **0.02** | **0.00** |
-
-### Kết quả
+Tại `application/topic_analyzer.py` → `predict_topic()` (dòng 258–298) — hàm chính kết hợp tất cả kỹ thuật:
 
 ```
-Chủ đề dự đoán : Công nghệ
-Mức tin cậy    : 🟢 Cao
-Từ khóa phát hiện : lập trình, python, api, dữ liệu, cơ sở dữ liệu, ...
-Cụm từ đặc trưng  : cơ sở dữ liệu
+Văn bản đầu vào
+    ↓
+Preprocess Text (normalize → clean → tokenize → stopwords → n-gram)
+    ↓
+Text → Vector (BoW)
+    ↓
+Với mỗi chủ đề (4 topics):
+    ├── Cosine Similarity với topic profile
+    ├── Keyword Matching (trọng số 1.0–2.0)
+    ├── Phrase Matching (trọng số 3.0)
+    ├── Conflict Penalty (phạt xung đột)
+    └── Context Boost (tăng ngữ cảnh)
+    ↓
+final = cosine + keyword + phrase + context - penalty
+    ↓
+Sắp xếp giảm dần → Chọn chủ đề điểm cao nhất
+    ↓
+Đánh giá confidence + Tính phần trăm
+    ↓
+TopicPrediction
 ```
 
 ---
 
-## 7. Tóm tắt
+## Tóm Tắt Kỹ Thuật NLP
 
-| Kỹ thuật NLP        | Vai trò                             | Kết quả đầu ra                                   |
-| --------------------- | ------------------------------------ | ---------------------------------------------------- |
-| Text Normalization    | Chuẩn hóa đầu vào               | Văn bản chữ thường, không thừa khoảng trắng |
-| Text Cleaning         | Loại bỏ ký tự rác               | Chỉ còn chữ cái + dấu tiếng Việt              |
-| Tokenization          | Tách câu thành từ                | Danh sách token                                     |
-| Stopword Removal      | Bỏ từ vô nghĩa                   | Danh sách token sạch                               |
-| N-gram Extraction     | Bắt cụm từ đặc trưng           | Cụm 2, 3, 4 từ liên tiếp                         |
-| Bag of Words          | Biểu diễn text → vector           | Vector tần suất từ                                |
-| Cosine Similarity     | Đo giống/khác giữa vector        | Điểm tương đồng 0–1                           |
-| Keyword Scoring       | Cộng điểm từ khóa đặc thù    | Keyword score + Phrase score                         |
-| Conflict Penalty      | Phạt tín hiệu nhiễu              | Trừ điểm khi nhầm lẫn chủ đề                 |
-| Confidence Assessment | Đánh giá chất lượng dự đoán | Mức Cao / Trung bình / Thấp                       |
+| # | Kỹ thuật | File | Dòng | Mô tả |
+|---|---|---|---|---|
+| 1 | **Text Normalization** | `topic_analyzer.py` | L30–31 | Lowercase + strip |
+| 2 | **Regex Cleaning (Vietnamese)** | `topic_analyzer.py` | L33–41 | Loại ký tự đặc biệt, giữ dấu tiếng Việt |
+| 3 | **Whitespace Tokenization** | `topic_analyzer.py` | L43–46 | Tách từ theo khoảng trắng |
+| 4 | **Stopword Removal** | `topic_analyzer.py` | L48–49 | Loại 62 từ dừng tiếng Việt |
+| 5 | **N-gram Extraction** | `topic_analyzer.py` | L51–58 | Sinh bigram, trigram, 4-gram |
+| 6 | **Bag-of-Words** | `topic_analyzer.py` | L85–91 | Chuyển text → frequency vector |
+| 7 | **Cosine Similarity** | `topic_analyzer.py` | L93–99 | Đo độ tương đồng vector |
+| 8 | **Topic Profile (Centroid)** | `topic_analyzer.py` | L101–109 | Vector đại diện mỗi chủ đề |
+| 9 | **Weighted Keyword Matching** | `topic_analyzer.py` | L111–128 | So khớp từ khóa có trọng số |
+| 10 | **Strong Phrase Matching** | `topic_analyzer.py` | L130–133 | So khớp cụm từ đặc trưng mạnh |
+| 11 | **Cross-topic Conflict Penalty** | `topic_analyzer.py` | L135–190 | Phạt từ khóa thuộc chủ đề khác |
+| 12 | **Context Priority Boost** | `topic_analyzer.py` | L192–221 | Tăng điểm khi có tổ hợp đặc trưng |
+| 13 | **Gap-ratio Confidence** | `topic_analyzer.py` | L223–239 | Đánh giá mức tin cậy kết quả |
+| 14 | **Min-shift Normalization** | `topic_analyzer.py` | L241–256 | Tính phần trăm tương đối |
 
-**Tất cả kỹ thuật kết hợp** thành 1 pipeline hoàn chỉnh: từ đoạn văn bản thô → tiền xử lý → biểu diễn số → chấm điểm → dự đoán chủ đề + giải thích.
+> **NOTE**: Toàn bộ logic NLP nằm gần như trọn vẹn trong file `application/topic_analyzer.py` (344 dòng), với cấu hình từ khóa/cụm từ tại `domain/topic_config.py` và data model tại `domain/entities.py`.

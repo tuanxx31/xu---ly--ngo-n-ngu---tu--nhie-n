@@ -218,6 +218,24 @@ class TopicAnalyzer:
             if "cầu thủ" in keyword_set and "huấn luyện viên" in keyword_set:
                 boost += 1.0
 
+        if topic == "Kinh tế":
+            if "thị trường chứng khoán" in phrase_set or "tăng trưởng kinh tế" in phrase_set:
+                boost += 1.8
+            if "đầu tư" in keyword_set and "lãi suất" in keyword_set:
+                boost += 1.0
+
+        if topic == "Ẩm thực":
+            if "ẩm thực đường phố" in phrase_set or "công thức nấu ăn" in phrase_set:
+                boost += 1.8
+            if "đầu bếp" in keyword_set and "món ăn" in keyword_set:
+                boost += 1.0
+
+        if topic == "Văn hóa - Nghệ thuật":
+            if "triển lãm nghệ thuật" in phrase_set or "di sản văn hóa" in phrase_set:
+                boost += 1.8
+            if "nghệ sĩ" in keyword_set and "sân khấu" in keyword_set:
+                boost += 1.0
+
         return boost
 
     def assess_confidence(self, sorted_scores):
