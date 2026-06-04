@@ -26,17 +26,67 @@ Dự án minh họa cách xây dựng một hệ thống xử lý ngôn ngữ t�
 - Hiển thị giải thích vì sao hệ thống chọn chủ đề đó.
 - Lưu lịch sử phân tích vào file JSON.
 
-## Cấu trúc file
+## Kiến trúc dự án
+
+Dự án đã được tổ chức lại theo Clean Architecture ở mức vừa phải để dễ báo cáo và dễ chia nhiệm vụ. Ý tưởng chính là tách giao diện, xử lý nghiệp vụ, dữ liệu và lưu trữ thành các phần riêng.
 
 ```text
 .
-├── topic_suggestion_app.py     # File chạy chính của ứng dụng
-├── topic_suggestion_ui.py      # Giao diện Tkinter và xử lý thao tác người dùng
-├── topic_analysis_core.py      # Logic phân tích văn bản và dự đoán chủ đề
-├── requirements.txt            # Ghi chú dependency của dự án
-├── analysis_history.json       # Lịch sử phân tích đã lưu
-└── README.md                   # Tài liệu mô tả dự án
+├── domain/
+│   ├── entities.py                  # Các entity/dataclass dùng chung
+│   └── topic_config.py              # Chủ đề, stopwords, từ khóa, trọng số
+├── application/
+│   ├── topic_analyzer.py            # Use case phân tích và dự đoán chủ đề
+│   └── history_repository.py        # Interface/cổng lưu lịch sử
+├── infrastructure/
+│   └── json_history_repository.py   # Lưu và đọc lịch sử bằng file JSON
+├── data/
+│   └── sample_dataset.py            # Bộ dữ liệu mẫu
+├── presentation/
+│   └── tkinter_app.py               # Giao diện Tkinter
+├── topic_suggestion_app.py          # File chạy chính, lắp các thành phần lại với nhau
+├── topic_analysis_core.py           # Facade tương thích cho code cũ
+├── topic_suggestion_ui.py           # Facade tương thích cho code cũ
+├── requirements.txt
+├── analysis_history.json
+└── README.md
 ```
+
+### Trách nhiệm từng tầng
+
+- `domain`: chứa các đối tượng và quy tắc ổn định nhất của bài toán như `TextSample`, `ProcessedText`, `TopicPrediction`, danh sách chủ đề, stopwords và trọng số từ khóa.
+- `application`: chứa logic xử lý chính. `TopicAnalyzer` nhận văn bản, tiền xử lý, chấm điểm và trả về kết quả phân tích.
+- `infrastructure`: chứa chi tiết kỹ thuật bên ngoài nghiệp vụ. Hiện tại là đọc/ghi lịch sử bằng JSON.
+- `data`: chứa bộ dữ liệu mẫu dùng để tạo từ điển và hồ sơ chủ đề.
+- `presentation`: chứa giao diện Tkinter, chỉ gọi use case và repository, không tự xử lý thuật toán.
+
+Luồng phụ thuộc chính:
+
+```text
+presentation -> application -> domain
+infrastructure -> application/domain
+data -> domain
+topic_suggestion_app.py -> lắp tất cả thành app chạy được
+```
+
+## Gợi ý phân chia nhiệm vụ nhóm
+
+- Thành viên 1: phụ trách `domain/topic_config.py` và `data/sample_dataset.py`, bổ sung dữ liệu mẫu, stopwords, từ khóa và trọng số.
+- Thành viên 2: phụ trách `application/topic_analyzer.py`, giải thích thuật toán Bag of Words, Cosine Similarity, Keyword Weighting, Phrase Matching, Context Bonus và Conflict Penalty.
+- Thành viên 3: phụ trách `presentation/tkinter_app.py`, trình bày giao diện, nhập văn bản, hiển thị kết quả, xem dữ liệu mẫu và lịch sử.
+- Thành viên 4: phụ trách `infrastructure/json_history_repository.py`, giải thích cách lưu lịch sử phân tích vào `analysis_history.json`.
+- Khi báo cáo tổng thể, dùng `topic_suggestion_app.py` để giải thích cách các phần được khởi tạo và kết nối với nhau.
+
+## Cấu trúc file cũ và mới
+
+```text
+.
+├── topic_suggestion_app.py     # File chạy chính
+├── topic_suggestion_ui.py      # File tương thích, trỏ sang presentation/tkinter_app.py
+└── topic_analysis_core.py      # File tương thích, trỏ sang các tầng mới
+```
+
+Hai file `topic_suggestion_ui.py` và `topic_analysis_core.py` được giữ lại để tránh lỗi nếu code cũ vẫn import theo tên cũ. Logic chính hiện nằm trong các thư mục theo kiến trúc mới.
 
 ## Cách chạy dự án
 
@@ -75,7 +125,7 @@ Luồng xử lý chính:
 
 ## Bộ dữ liệu mẫu
 
-Bộ dữ liệu mẫu được khai báo trực tiếp trong `topic_analysis_core.py`. Mỗi chủ đề có 10 văn bản mẫu, tổng cộng 40 văn bản.
+Bộ dữ liệu mẫu được khai báo trong `data/sample_dataset.py`. Mỗi chủ đề có 10 văn bản mẫu, tổng cộng 40 văn bản.
 
 Các văn bản này được dùng để:
 
