@@ -1,5 +1,22 @@
 # 🧠 Phân loại chủ đề bài viết tiếng Việt bằng kỹ thuật NLP
 
+---
+
+> ## 📣 BÁO CÁO NHANH
+>
+> Dự án của em xây dựng một **hệ thống phân loại chủ đề văn bản tiếng Việt**, giải quyết bài toán **Text Classification** — nhận vào một đoạn văn bản bất kỳ và tự động xác định nó thuộc chủ đề nào trong 4 chủ đề: **Công nghệ, Giáo dục, Sức khỏe, Thể thao**.
+>
+> Toàn bộ thuật toán được **viết thủ công bằng Python thuần**, không sử dụng bất kỳ thư viện Machine Learning hay NLP có sẵn nào (không scikit-learn, không NLTK, không spaCy).
+>
+> **Quy trình xử lý** gồm 3 giai đoạn chính:
+> - **Tiền xử lý:** Chuẩn hóa chữ thường → Làm sạch ký tự đặc biệt (regex hỗ trợ dấu tiếng Việt) → Tách từ theo khoảng trắng → Loại bỏ 62 từ dừng tiếng Việt → Trích xuất cụm N-gram (2, 3, 4 từ) để bắt các từ ghép như "trí tuệ nhân tạo", "phác đồ điều trị".
+> - **Biểu diễn & so sánh:** Dùng **Bag of Words** chuyển văn bản thành vector tần suất từ, rồi tính **Cosine Similarity** giữa vector đó với hồ sơ (profile) của 4 chủ đề đã xây từ 40 câu mẫu.
+> - **Chấm điểm tổng hợp:** Kết hợp Cosine Similarity + điểm từ khóa có trọng số + điểm cụm từ đặc trưng + bonus ngữ cảnh − phạt tín hiệu nhiễu (Conflict Penalty). Chủ đề có tổng điểm cao nhất là kết quả dự đoán. Hệ thống còn tự đánh giá **mức độ tin cậy** (Cao / Trung bình / Thấp) dựa trên khoảng cách điểm giữa chủ đề nhất và nhì, đồng thời sinh **giải thích** tự động bằng tiếng Việt.
+>
+> **Công thức:** `Final_Score = Cosine + Keyword + Phrase + Context − Penalty`
+
+---
+
 ## 1. Giới thiệu dự án
 
 Hệ thống nhận vào một đoạn văn bản tiếng Việt bất kỳ, sau đó **tự động xác định chủ đề** của đoạn văn đó thuộc 1 trong 4 nhóm:
