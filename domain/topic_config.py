@@ -22,11 +22,10 @@ TOPIC_CONFIG = {
     "Công nghệ": {
         "keywords": {
             "máy tính": 2.0, "phần mềm": 1.8, "internet": 0.8, "dữ liệu": 1.8,
-            "ai": 1.6, "trí tuệ nhân tạo": 1.2, "lập trình": 2.0, "thuật toán": 2.0,
+            "ai": 1.6, "lập trình": 2.0, "thuật toán": 2.0,
             "ứng dụng": 0.6, "bảo mật": 1.8, "hệ thống": 0.8, "mạng": 0.8,
             "thiết bị": 1.0, "server": 1.6, "website": 1.5, "robot": 1.5,
-            "cơ sở dữ liệu": 1.2, "điện toán đám mây": 1.2, "công nghệ số": 1.2,
-            "tự động hóa": 1.2, "api": 1.6, "phần cứng": 2.0, "blockchain": 2.0,
+            "api": 1.6, "phần cứng": 2.0, "blockchain": 2.0,
             "thực tế ảo": 2.0, "kỹ thuật số": 1.5, "linh kiện": 1.2, "công nghệ thông tin": 1.8,
         },
         "strong_phrases": {
@@ -51,8 +50,8 @@ TOPIC_CONFIG = {
     },
     "Giáo dục": {
         "keywords": {
-            "học sinh": 2.0, "sinh viên": 2.0, "giáo viên": 2.0, "lớp học": 1.2,
-            "bài giảng": 1.2, "học tập": 1.5, "kiến thức": 1.2, "kỳ thi": 2.0,
+            "học sinh": 2.0, "sinh viên": 2.0, "giáo viên": 2.0,
+            "học tập": 1.5, "kiến thức": 1.2, "kỳ thi": 2.0,
             "đào tạo": 2.0, "trường học": 2.0, "nhà trường": 2.0, "giảng dạy": 2.0,
             "môn học": 1.5, "điểm số": 1.5, "giáo trình": 2.0, "sách vở": 1.5,
             "thư viện": 1.2, "bài kiểm tra": 2.0, "kỹ năng": 0.8, "học bổng": 2.0,
@@ -81,9 +80,9 @@ TOPIC_CONFIG = {
     "Sức khỏe": {
         "keywords": {
             "bác sĩ": 2.0, "bệnh": 0.8, "bệnh viện": 2.0, "thuốc": 2.0,
-            "điều trị": 2.0, "khám bệnh": 1.2, "dinh dưỡng": 1.4, "cơ thể": 0.8,
-            "giấc ngủ": 1.2, "sức đề kháng": 1.2, "sức khỏe": 0.8, "triệu chứng": 2.0,
-            "chế độ ăn": 1.2, "rau xanh": 1.2, "nước uống": 1.0, "miễn dịch": 2.0,
+            "điều trị": 2.0, "dinh dưỡng": 1.4, "cơ thể": 0.8,
+            "sức khỏe": 0.8, "triệu chứng": 2.0,
+            "rau xanh": 1.2, "nước uống": 1.0, "miễn dịch": 2.0,
             "huyết áp": 2.0, "xét nghiệm": 2.0, "bệnh nhân": 1.5, "yoga": 1.5,
             "tập thể dục": 1.8, "vắc-xin": 2.0, "y tế": 2.0, "tâm lý": 1.2,
         },
@@ -110,9 +109,8 @@ TOPIC_CONFIG = {
     },
     "Thể thao": {
         "keywords": {
-            "bóng đá": 2.0, "cầu thủ": 2.0, "vận động viên": 1.5, "trận đấu": 1.5,
-            "thi đấu": 1.6, "huấn luyện viên": 1.5, "ghi bàn": 1.5, "giải đấu": 2.0,
-            "sân vận động": 1.5, "trọng tài": 2.0, "đội bóng": 1.5, "bóng rổ": 2.0,
+            "bóng đá": 2.0, "cầu thủ": 2.0, "thi đấu": 1.6, "giải đấu": 2.0,
+            "trọng tài": 2.0, "bóng rổ": 2.0,
             "chiến thuật": 1.5, "chuyền bóng": 2.0, "sút bóng": 2.0, "huy chương": 2.0,
             "tỷ số": 1.5, "khởi động": 0.8, "thể lực": 0.8, "đua xe": 2.0,
             "quần vợt": 2.0, "bơi lội": 2.0, "cúp": 1.5, "olympic": 2.0,
@@ -303,7 +301,7 @@ TOPIC_CONFIG = {
             "xe hơi": 2.0, "hộp số": 2.0, "tăng tốc": 1.5, "phanh": 2.0,
             "xe điện": 2.0, "hybrid": 2.0, "lốp xe": 2.0, "khung gầm": 2.0,
             "công suất": 1.5, "xe tải": 2.0, "bảo dưỡng": 1.6, "đại lý": 1.0,
-            "xe bán tải": 1.5, "hãng xe": 2.0, "phiên bản": 0.8, "nội thất": 1.2,
+            "hãng xe": 2.0, "phiên bản": 0.8, "nội thất": 1.2,
             "giao thông": 1.0, "phụ tùng": 2.0, "an toàn": 0.7, "siêu xe": 2.0,
         },
         "strong_phrases": {
