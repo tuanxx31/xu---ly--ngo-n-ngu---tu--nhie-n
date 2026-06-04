@@ -611,7 +611,6 @@ class TopicAnalyzer:
 
         processed_text = self.preprocess_text(text)
         # Bước 1: Tiền xử lý văn bản đầu vào
-
         input_vector = self.text_to_vector(processed_text.tokens, self.vocabulary)
         # Bước 2: Chuyển văn bản thành vector BoW
 
