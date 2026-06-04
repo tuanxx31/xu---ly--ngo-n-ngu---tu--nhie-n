@@ -4,7 +4,10 @@ APP_TITLE = "HỆ THỐNG GỢI Ý CHỦ ĐỀ BÀI VIẾT NGẮN"
 HISTORY_FILE = "analysis_history.json"
 MIN_WORDS_REQUIRED = 5
 
-TOPICS = ["Công nghệ", "Giáo dục", "Sức khỏe", "Thể thao", "Kinh tế", "Ẩm thực", "Văn hóa - Nghệ thuật"]
+TOPICS = [
+    "Công nghệ", "Giáo dục", "Sức khỏe", "Thể thao", "Kinh tế", "Ẩm thực",
+    "Văn hóa - Nghệ thuật", "Pháp luật", "Du lịch", "Xe", "Đời sống", "Bất động sản",
+]
 
 STOPWORDS = {
     "là", "và", "của", "có", "trong", "một", "những", "các", "cho", "với",
@@ -81,7 +84,7 @@ TOPIC_CONFIG = {
             "nhập khẩu": 2.0, "ngoại tệ": 2.0, "gdp": 2.0, "tài chính": 2.0,
             "kinh doanh": 1.5, "lợi nhuận": 2.0, "vốn": 1.5, "chứng khoán": 2.0,
             "doanh nghiệp": 1.5, "thuế": 1.5, "ngân sách": 2.0, "kinh tế": 1.0,
-            "thương mại": 2.0, "tiền tệ": 2.0, "trái phiếu": 2.0, "bất động sản": 2.0,
+            "thương mại": 2.0, "tiền tệ": 2.0, "trái phiếu": 2.0,
         },
         "strong_phrases": {
             "thị trường chứng khoán": 3.0, "tăng trưởng kinh tế": 3.0,
@@ -120,6 +123,86 @@ TOPIC_CONFIG = {
             "di sản văn hóa": 3.0, "sân khấu kịch": 3.0,
             "điện ảnh việt nam": 3.0, "triển lãm nghệ thuật": 3.0,
             "âm nhạc truyền thống": 3.0, "văn hóa dân gian": 3.0,
+        },
+    },
+    "Pháp luật": {
+        "keywords": {
+            "tòa án": 2.0, "bị cáo": 2.0, "luật sư": 2.0, "khởi tố": 2.0,
+            "xét xử": 2.0, "hình sự": 2.0, "bản án": 2.0, "vi phạm": 2.0,
+            "pháp luật": 1.0, "tội phạm": 2.0, "hình phạt": 2.0, "công an": 1.5,
+            "điều tra": 2.0, "truy tố": 2.0, "luật": 1.0, "quy định": 1.0,
+            "chứng cứ": 2.0, "bồi thường": 2.0, "kiện": 1.5, "phạm tội": 2.0,
+            "viện kiểm sát": 2.0, "thẩm phán": 2.0, "bào chữa": 2.0, "tạm giam": 2.0,
+        },
+        "strong_phrases": {
+            "vi phạm pháp luật": 3.0, "bộ luật hình sự": 3.0,
+            "quyền công dân": 3.0, "tòa án nhân dân": 3.0,
+            "viện kiểm sát nhân dân": 3.0, "khởi tố vụ án": 3.0,
+            "xét xử sơ thẩm": 3.0, "bản án tử hình": 3.0,
+        },
+    },
+    "Du lịch": {
+        "keywords": {
+            "du khách": 2.0, "khách sạn": 2.0, "resort": 2.0, "tham quan": 2.0,
+            "địa điểm": 1.5, "vé máy bay": 2.0, "hành trình": 2.0, "tour": 2.0,
+            "du lịch": 1.0, "cảnh đẹp": 2.0, "bãi biển": 2.0, "di tích": 2.0,
+            "lữ hành": 2.0, "homestay": 2.0, "hướng dẫn viên": 2.0, "danh lam": 2.0,
+            "thắng cảnh": 2.0, "đặt phòng": 2.0, "khám phá": 1.5, "trải nghiệm": 1.0,
+            "phượt": 2.0, "visa": 2.0, "hành lý": 2.0, "chuyến bay": 2.0,
+        },
+        "strong_phrases": {
+            "du lịch sinh thái": 3.0, "điểm đến du lịch": 3.0,
+            "khách sạn nghỉ dưỡng": 3.0, "danh lam thắng cảnh": 3.0,
+            "tour du lịch": 3.0, "hướng dẫn viên du lịch": 3.0,
+            "du lịch trải nghiệm": 3.0, "khu nghỉ dưỡng": 3.0,
+        },
+    },
+    "Xe": {
+        "keywords": {
+            "ô tô": 2.0, "xe máy": 2.0, "động cơ": 2.0, "mã lực": 2.0,
+            "sedan": 2.0, "suv": 2.0, "nhiên liệu": 2.0, "lái xe": 2.0,
+            "xe hơi": 2.0, "hộp số": 2.0, "tăng tốc": 1.5, "phanh": 2.0,
+            "xe điện": 2.0, "hybrid": 2.0, "lốp xe": 2.0, "khung gầm": 2.0,
+            "công suất": 1.5, "xe tải": 2.0, "bảo dưỡng": 2.0, "đại lý": 1.5,
+            "xe bán tải": 2.0, "hãng xe": 2.0, "phiên bản": 1.0, "nội thất": 1.5,
+        },
+        "strong_phrases": {
+            "xe ô tô": 3.0, "động cơ turbo": 3.0,
+            "xe máy điện": 3.0, "hộp số tự động": 3.0,
+            "xe bán tải": 3.0, "bảo dưỡng xe": 3.0,
+            "xe điện thông minh": 3.0, "đại lý ủy quyền": 3.0,
+        },
+    },
+    "Đời sống": {
+        "keywords": {
+            "gia đình": 2.0, "hôn nhân": 2.0, "nuôi dạy": 2.0, "tiêu dùng": 2.0,
+            "mua sắm": 2.0, "nhà cửa": 2.0, "con cái": 2.0, "vợ chồng": 2.0,
+            "nội trợ": 2.0, "chi tiêu": 2.0, "phụ huynh": 1.5, "hàng xóm": 2.0,
+            "đám cưới": 2.0, "ly hôn": 2.0, "sinh hoạt": 1.5, "thời trang": 1.5,
+            "làm đẹp": 2.0, "mỹ phẩm": 2.0, "trang trí": 1.5, "cuộc sống": 1.0,
+            "bỉm sữa": 2.0, "thai kỳ": 2.0, "dọn dẹp": 1.5, "tiết kiệm": 1.5,
+        },
+        "strong_phrases": {
+            "nuôi dạy con": 3.0, "đời sống gia đình": 3.0,
+            "chi tiêu tiết kiệm": 3.0, "mua sắm online": 3.0,
+            "hôn nhân gia đình": 3.0, "cuộc sống hàng ngày": 3.0,
+            "chăm sóc gia đình": 3.0, "trang trí nhà cửa": 3.0,
+        },
+    },
+    "Bất động sản": {
+        "keywords": {
+            "chung cư": 2.0, "đất nền": 2.0, "nhà phố": 2.0, "dự án": 2.0,
+            "quy hoạch": 2.0, "giá đất": 2.0, "căn hộ": 2.0, "biệt thự": 2.0,
+            "sổ đỏ": 2.0, "sổ hồng": 2.0, "mua bán": 1.5, "cho thuê": 1.5,
+            "bất động sản": 1.0, "môi giới": 2.0, "thổ cư": 2.0, "sang nhượng": 2.0,
+            "diện tích": 1.5, "xây dựng": 1.5, "tầng": 1.0, "phòng ngủ": 1.5,
+            "mặt bằng": 2.0, "khu đô thị": 2.0, "pháp lý": 1.5, "chủ đầu tư": 2.0,
+        },
+        "strong_phrases": {
+            "mua bán nhà đất": 3.0, "chung cư cao cấp": 3.0,
+            "khu đô thị mới": 3.0, "dự án bất động sản": 3.0,
+            "sổ đỏ chính chủ": 3.0, "giá bất động sản": 3.0,
+            "căn hộ chung cư": 3.0, "đất nền dự án": 3.0,
         },
     },
 }

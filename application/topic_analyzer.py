@@ -236,6 +236,36 @@ class TopicAnalyzer:
             if "nghệ sĩ" in keyword_set and "sân khấu" in keyword_set:
                 boost += 1.0
 
+        if topic == "Pháp luật":
+            if "tòa án nhân dân" in phrase_set or "khởi tố vụ án" in phrase_set:
+                boost += 1.8
+            if "bị cáo" in keyword_set and "xét xử" in keyword_set:
+                boost += 1.0
+
+        if topic == "Du lịch":
+            if "tour du lịch" in phrase_set or "danh lam thắng cảnh" in phrase_set:
+                boost += 1.8
+            if "du khách" in keyword_set and "khách sạn" in keyword_set:
+                boost += 1.0
+
+        if topic == "Xe":
+            if "động cơ turbo" in phrase_set or "hộp số tự động" in phrase_set:
+                boost += 1.8
+            if "ô tô" in keyword_set and "động cơ" in keyword_set:
+                boost += 1.0
+
+        if topic == "Đời sống":
+            if "nuôi dạy con" in phrase_set or "đời sống gia đình" in phrase_set:
+                boost += 1.8
+            if "gia đình" in keyword_set and "vợ chồng" in keyword_set:
+                boost += 1.0
+
+        if topic == "Bất động sản":
+            if "chung cư cao cấp" in phrase_set or "dự án bất động sản" in phrase_set:
+                boost += 1.8
+            if "chung cư" in keyword_set and "căn hộ" in keyword_set:
+                boost += 1.0
+
         return boost
 
     def assess_confidence(self, sorted_scores):
