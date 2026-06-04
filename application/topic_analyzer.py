@@ -11,7 +11,7 @@ from domain.entities import (
     TopicPrediction,
     TopicScoreDetail,
 )
-from domain.topic_config import STOPWORDS, TOPIC_CONFIG, TOPICS
+from domain.topic_config import COSINE_WEIGHT, STOPWORDS, TOPIC_CONFIG, TOPICS
 
 
 class TopicAnalyzer:
@@ -257,7 +257,7 @@ class TopicAnalyzer:
             phrase_score, phrase_matches = self.calculate_phrase_score(text, topic)
             conflict_penalty, conflict_details = self.calculate_conflict_penalty(text, topic)
             context_bonus = self.apply_context_priority(topic, keyword_matches, phrase_matches)
-            final_score = cosine_score + keyword_score + phrase_score + context_bonus - conflict_penalty
+            final_score = cosine_score * COSINE_WEIGHT + keyword_score + phrase_score + context_bonus - conflict_penalty
 
             score_breakdown[topic] = TopicScoreDetail(
                 cosine_score=cosine_score,
