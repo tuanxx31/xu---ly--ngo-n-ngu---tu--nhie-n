@@ -91,6 +91,7 @@ class TopicAnalyzer:
         return [token_counter.get(word, 0) for word in vocabulary]
 
     def cosine_similarity(self, vector1: Sequence[int], vector2: Sequence[int]) -> float:
+        # cos(θ) = (A·B) / (|A| × |B|)
         dot_product = sum(left * right for left, right in zip(vector1, vector2))
         magnitude1 = math.sqrt(sum(value * value for value in vector1))
         magnitude2 = math.sqrt(sum(value * value for value in vector2))
