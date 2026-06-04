@@ -52,7 +52,7 @@ class TopicAnalyzer:
         cleaned_text = self.clean_text(self.normalize_text(text))
         tokens = self.tokenize(cleaned_text)
         phrases = []
-        for size in (2, 3):
+        for size in (2, 3, 4):
             for index in range(len(tokens) - size + 1):
                 phrases.append(" ".join(tokens[index:index + size]))
         return phrases
@@ -201,7 +201,7 @@ class TopicAnalyzer:
                 boost += 1.2
 
         if topic == "Công nghệ":
-            if "trí tuệ nhân tạo" in phrase_set or "cơ sở dữ liệu" in phrase_set:
+            if "trí tuệ nhân tạo"  in phrase_set or "cơ sở dữ liệu" in phrase_set:
                 boost += 1.8
             if "phần mềm" in keyword_set and "hệ thống" in keyword_set:
                 boost += 1.0
