@@ -2,13 +2,21 @@
 import math
 import re
 from collections import Counter, defaultdict
-from typing import Iterable, List
+from typing import Iterable, List, Sequence
 
-from domain.entities import AnalysisResult, ProcessedText, TextSample, TopicPrediction, TopicScoreDetail
+from domain.entities import (
+    AnalysisResult,
+    ProcessedText,
+    TextSample,
+    TopicPrediction,
+    TopicScoreDetail,
+)
 from domain.topic_config import STOPWORDS, TOPIC_CONFIG, TOPICS
 
 
 class TopicAnalyzer:
+    """Use case phân tích văn bản và dự đoán chủ đề."""
+
     def __init__(self, dataset: Iterable[TextSample]):
         self.dataset = list(dataset)
         self.vocabulary = self.build_vocabulary(self.dataset)
@@ -74,7 +82,7 @@ class TopicAnalyzer:
                     vocabulary.append(token)
         return vocabulary
 
-    def text_to_vector(self, text_or_tokens, vocabulary: List[str]) -> List[int]:
+    def text_to_vector(self, text_or_tokens, vocabulary: Sequence[str]) -> List[int]:
         if isinstance(text_or_tokens, str):
             tokens = self.preprocess_text(text_or_tokens).tokens
         else:
@@ -82,7 +90,7 @@ class TopicAnalyzer:
         token_counter = Counter(tokens)
         return [token_counter.get(word, 0) for word in vocabulary]
 
-    def cosine_similarity(self, vector1: List[int], vector2: List[int]) -> float:
+    def cosine_similarity(self, vector1: Sequence[int], vector2: Sequence[int]) -> float:
         dot_product = sum(left * right for left, right in zip(vector1, vector2))
         magnitude1 = math.sqrt(sum(value * value for value in vector1))
         magnitude2 = math.sqrt(sum(value * value for value in vector2))
@@ -90,7 +98,7 @@ class TopicAnalyzer:
             return 0.0
         return dot_product / (magnitude1 * magnitude2)
 
-    def build_topic_profiles(self, dataset: Iterable[TextSample], vocabulary: List[str]):
+    def build_topic_profiles(self, dataset: Iterable[TextSample], vocabulary: Sequence[str]):
         grouped_tokens = defaultdict(list)
         for item in dataset:
             grouped_tokens[item.label].extend(self.preprocess_text(item.text).tokens)
@@ -126,8 +134,20 @@ class TopicAnalyzer:
 
     def calculate_conflict_penalty(self, text: str, topic: str):
         processed_text = self.preprocess_text(text)
-        own_keywords = set(term for term, _ in self.match_weighted_terms(processed_text, TOPIC_CONFIG[topic]["keywords"]))
-        own_phrases = set(term for term, _ in self.match_weighted_terms(processed_text, TOPIC_CONFIG[topic]["strong_phrases"]))
+        own_keywords = set(
+            term
+            for term, _ in self.match_weighted_terms(
+                processed_text,
+                TOPIC_CONFIG[topic]["keywords"],
+            )
+        )
+        own_phrases = set(
+            term
+            for term, _ in self.match_weighted_terms(
+                processed_text,
+                TOPIC_CONFIG[topic]["strong_phrases"],
+            )
+        )
 
         penalty = 0.0
         details = []
@@ -137,8 +157,14 @@ class TopicAnalyzer:
             if other_topic == topic:
                 continue
 
-            other_keyword_matches = self.match_weighted_terms(processed_text, TOPIC_CONFIG[other_topic]["keywords"])
-            other_phrase_matches = self.match_weighted_terms(processed_text, TOPIC_CONFIG[other_topic]["strong_phrases"])
+            other_keyword_matches = self.match_weighted_terms(
+                processed_text,
+                TOPIC_CONFIG[other_topic]["keywords"],
+            )
+            other_phrase_matches = self.match_weighted_terms(
+                processed_text,
+                TOPIC_CONFIG[other_topic]["strong_phrases"],
+            )
             topic_penalty = 0.0
 
             for term, weight in other_keyword_matches:
@@ -308,7 +334,8 @@ class TopicAnalyzer:
             lines.append(f"   Chữ thường: {processed.normalized_text}")
             lines.append(f"   Sau làm sạch: {processed.cleaned_text}")
             lines.append(f"   Số từ gốc: {len(processed.raw_tokens)}")
-            lines.append(f"   Tách từ cơ bản: {processed.raw_tokens}")
+            lines.append(f"   Tách từ bằng khoảng trắng: {processed.raw_tokens}")
+            lines.append(f"   Cụm 2-3 từ từ extract_phrases: {processed.phrases[:20]}")
             lines.append(f"   Số từ sau bỏ stopwords: {len(processed.tokens)}")
             lines.append(f"   Danh sách từ sau bỏ stopwords: {processed.tokens}")
             lines.append("")

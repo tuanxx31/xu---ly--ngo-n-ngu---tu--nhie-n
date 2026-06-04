@@ -1,0 +1,15 @@
+HƯỚNG DẪN CHỨC NĂNG IMPORT FILE
+
+Bản này đã thêm nút "Import file" trên giao diện.
+
+Hỗ trợ:
+- .txt: đọc bằng Python thuần
+- .docx: cần cài python-docx
+- .pdf: cần cài PyPDF2
+
+Cài thư viện đọc Word/PDF:
+pip install -r requirements.txt
+
+Lưu ý:
+- Các thư viện trên chỉ dùng để đọc file tài liệu, không phải thư viện NLP/ML.
+- PDF dạng ảnh scan có thể không đọc được chữ vì cần OCR.

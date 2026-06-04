@@ -39,12 +39,15 @@ Dự án đã được tổ chức lại theo Clean Architecture ở mức vừa
 │   ├── topic_analyzer.py            # Use case phân tích và dự đoán chủ đề
 │   └── history_repository.py        # Interface/cổng lưu lịch sử
 ├── infrastructure/
-│   └── json_history_repository.py   # Lưu và đọc lịch sử bằng file JSON
+│   ├── json_history_repository.py   # Lưu và đọc lịch sử bằng file JSON
+│   └── document_reader.py           # Đọc file .txt, .docx, .pdf để import văn bản
 ├── data/
 │   └── sample_dataset.py            # Bộ dữ liệu mẫu
 ├── presentation/
 │   └── tkinter_app.py               # Giao diện Tkinter
 ├── topic_suggestion_app.py          # File chạy chính, lắp các thành phần lại với nhau
+├── topic_analysis_core.py           # Wrapper tương thích với cách import cũ
+├── topic_suggestion_ui.py           # Wrapper tương thích với cách import cũ
 ├── requirements.txt
 ├── analysis_history.json
 └── README.md
@@ -54,7 +57,7 @@ Dự án đã được tổ chức lại theo Clean Architecture ở mức vừa
 
 - `domain`: chứa các đối tượng và quy tắc ổn định nhất của bài toán như `TextSample`, `ProcessedText`, `TopicPrediction`, danh sách chủ đề, stopwords và trọng số từ khóa.
 - `application`: chứa logic xử lý chính. `TopicAnalyzer` nhận văn bản, tiền xử lý, chấm điểm và trả về kết quả phân tích.
-- `infrastructure`: chứa chi tiết kỹ thuật bên ngoài nghiệp vụ. Hiện tại là đọc/ghi lịch sử bằng JSON.
+- `infrastructure`: chứa chi tiết kỹ thuật bên ngoài nghiệp vụ. Hiện tại là đọc/ghi lịch sử bằng JSON và đọc nội dung file `.txt`, `.docx`, `.pdf`.
 - `data`: chứa bộ dữ liệu mẫu dùng để tạo từ điển và hồ sơ chủ đề.
 - `presentation`: chứa giao diện Tkinter, chỉ gọi use case và repository, không tự xử lý thuật toán.
 
@@ -72,7 +75,7 @@ topic_suggestion_app.py -> lắp tất cả thành app chạy được
 - Thành viên 1: phụ trách `domain/topic_config.py` và `data/sample_dataset.py`, bổ sung dữ liệu mẫu, stopwords, từ khóa và trọng số.
 - Thành viên 2: phụ trách `application/topic_analyzer.py`, giải thích thuật toán Bag of Words, Cosine Similarity, Keyword Weighting, Phrase Matching, Context Bonus và Conflict Penalty.
 - Thành viên 3: phụ trách `presentation/tkinter_app.py`, trình bày giao diện, nhập văn bản, hiển thị kết quả, xem dữ liệu mẫu và lịch sử.
-- Thành viên 4: phụ trách `infrastructure/json_history_repository.py`, giải thích cách lưu lịch sử phân tích vào `analysis_history.json`.
+- Thành viên 4: phụ trách `infrastructure/json_history_repository.py` và `infrastructure/document_reader.py`, giải thích cách lưu lịch sử vào `analysis_history.json` và cách import file văn bản.
 - Khi báo cáo tổng thể, dùng `topic_suggestion_app.py` để giải thích cách các phần được khởi tạo và kết nối với nhau.
 
 ## Cách chạy dự án
@@ -81,8 +84,15 @@ Yêu cầu:
 
 - Python 3.x
 - Tkinter có sẵn trong bản Python cài đặt trên máy
+- `python-docx` và `PyPDF2` nếu muốn dùng chức năng import Word/PDF
 
-Dự án không cần cài thêm thư viện ngoài.
+Các thư viện trong `requirements.txt` chỉ dùng để đọc tài liệu, không phải thư viện NLP/ML.
+
+Cài thư viện hỗ trợ import file:
+
+```bash
+pip install -r requirements.txt
+```
 
 Chạy ứng dụng bằng lệnh:
 
@@ -90,7 +100,7 @@ Chạy ứng dụng bằng lệnh:
 python3 topic_suggestion_app.py
 ```
 
-Sau khi chạy, cửa sổ ứng dụng sẽ mở ra. Nhập một đoạn văn bản tiếng Việt ngắn rồi bấm **Phân tích chủ đề**.
+Sau khi chạy, cửa sổ ứng dụng sẽ mở ra. Nhập một đoạn văn bản tiếng Việt ngắn rồi bấm **Phân tích ngay**.
 
 ## Cách hệ thống hoạt động
 
