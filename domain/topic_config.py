@@ -36,6 +36,19 @@ TOPIC_CONFIG = {
             "hệ thống phần mềm": 3.0, "lập trình python": 3.0, "an ninh mạng": 3.0,
             "công nghệ blockchain": 3.0, "chuyển đổi số": 3.0, "phát triển ứng dụng": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["trí tuệ nhân tạo", "cơ sở dữ liệu"], "score": 1.8},
+                {"phrases": ["điện toán đám mây", "an ninh mạng", "chuyển đổi số"], "score": 1.5},
+                {"phrases": ["lập trình python", "hệ thống phần mềm"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["phần mềm", "hệ thống"], "score": 1.0},
+                {"keywords": ["lập trình", "thuật toán"], "score": 1.2},
+                {"keywords": ["ai", "dữ liệu"], "score": 1.0},
+                {"keywords": ["bảo mật", "mạng"], "score": 0.8},
+            ],
+        },
     },
     "Giáo dục": {
         "keywords": {
@@ -51,6 +64,19 @@ TOPIC_CONFIG = {
             "lớp học": 3.0, "bài giảng": 3.0, "phương pháp giảng dạy": 3.0,
             "chương trình đào tạo": 3.0, "môi trường học tập": 3.0, "tuyển sinh đại học": 3.0,
             "phát triển kỹ năng": 3.0, "đổi mới giáo dục": 3.0,
+        },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["học trực tuyến", "bài giảng online"], "score": 1.8},
+                {"phrases": ["phương pháp giảng dạy", "chương trình đào tạo"], "score": 1.5},
+                {"phrases": ["tuyển sinh đại học", "đổi mới giáo dục"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["học sinh", "giáo viên"], "score": 1.2},
+                {"keywords": ["sinh viên", "đại học"], "score": 1.0},
+                {"keywords": ["kỳ thi", "điểm số"], "score": 1.0},
+                {"keywords": ["đào tạo", "giảng dạy"], "score": 0.8},
+            ],
         },
     },
     "Sức khỏe": {
@@ -68,6 +94,19 @@ TOPIC_CONFIG = {
             "phác đồ điều trị": 3.0, "khám bệnh định kỳ": 3.0, "chăm sóc sức khỏe": 3.0,
             "phòng chống dịch bệnh": 3.0, "lối sống lành mạnh": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["khám bệnh", "phác đồ điều trị"], "score": 1.8},
+                {"phrases": ["chăm sóc sức khỏe", "lối sống lành mạnh"], "score": 1.5},
+                {"phrases": ["phòng chống dịch bệnh", "bác sĩ chuyên khoa"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["bác sĩ", "bệnh viện"], "score": 1.0},
+                {"keywords": ["thuốc", "điều trị"], "score": 1.0},
+                {"keywords": ["dinh dưỡng", "tập thể dục"], "score": 0.8},
+                {"keywords": ["triệu chứng", "xét nghiệm"], "score": 1.2},
+            ],
+        },
     },
     "Thể thao": {
         "keywords": {
@@ -83,6 +122,19 @@ TOPIC_CONFIG = {
             "huấn luyện viên": 3.0, "đội bóng": 3.0, "vận động viên": 3.0,
             "chiến thuật pressing": 3.0, "đội hình thi đấu": 3.0, "giải ngoại hạng": 3.0,
             "tinh thần thể thao": 3.0, "thành tích thi đấu": 3.0,
+        },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["trận đấu", "ghi bàn", "sân vận động"], "score": 1.8},
+                {"phrases": ["đội hình thi đấu", "chiến thuật pressing"], "score": 1.5},
+                {"phrases": ["giải ngoại hạng", "tinh thần thể thao"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["cầu thủ", "huấn luyện viên"], "score": 1.0},
+                {"keywords": ["bóng đá", "giải đấu"], "score": 1.2},
+                {"keywords": ["vận động viên", "thi đấu"], "score": 1.0},
+                {"keywords": ["tỷ số", "trọng tài"], "score": 0.8},
+            ],
         },
     },
     "Kinh tế": {
@@ -102,6 +154,19 @@ TOPIC_CONFIG = {
             "đầu tư nước ngoài": 3.0, "ngân sách nhà nước": 3.0, "khởi nghiệp startup": 3.0,
             "phát triển kinh tế": 3.0, "quản lý tài chính": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["thị trường chứng khoán", "tăng trưởng kinh tế"], "score": 1.8},
+                {"phrases": ["chính sách tiền tệ", "đầu tư nước ngoài"], "score": 1.5},
+                {"phrases": ["lãi suất ngân hàng", "ngân sách nhà nước"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["đầu tư", "lãi suất"], "score": 1.0},
+                {"keywords": ["cổ phiếu", "chứng khoán"], "score": 1.2},
+                {"keywords": ["ngân hàng", "tài chính"], "score": 0.8},
+                {"keywords": ["xuất khẩu", "nhập khẩu"], "score": 1.0},
+            ],
+        },
     },
     "Ẩm thực": {
         "keywords": {
@@ -119,6 +184,19 @@ TOPIC_CONFIG = {
             "đặc sản vùng miền": 3.0, "nghệ thuật ẩm thực": 3.0,
             "hương vị đặc trưng": 3.0, "chế biến món ăn": 3.0, "nhà hàng cao cấp": 3.0,
             "ẩm thực vùng miền": 3.0, "bí quyết nấu ăn": 3.0,
+        },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["ẩm thực đường phố", "công thức nấu ăn"], "score": 1.8},
+                {"phrases": ["đặc sản vùng miền", "món ăn truyền thống"], "score": 1.5},
+                {"phrases": ["nghệ thuật ẩm thực", "bí quyết nấu ăn"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["đầu bếp", "món ăn"], "score": 1.0},
+                {"keywords": ["nấu ăn", "nguyên liệu"], "score": 1.0},
+                {"keywords": ["nhà hàng", "thực đơn"], "score": 0.8},
+                {"keywords": ["gia vị", "chế biến"], "score": 0.8},
+            ],
         },
     },
     "Văn hóa - Nghệ thuật": {
@@ -138,6 +216,19 @@ TOPIC_CONFIG = {
             "âm nhạc truyền thống": 3.0, "văn hóa dân gian": 3.0, "tác phẩm nghệ thuật": 3.0,
             "biểu diễn nghệ thuật": 3.0, "văn hóa nghệ thuật": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["triển lãm nghệ thuật", "di sản văn hóa"], "score": 1.8},
+                {"phrases": ["lễ hội văn hóa", "âm nhạc truyền thống"], "score": 1.5},
+                {"phrases": ["điện ảnh việt nam", "văn hóa dân gian"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["nghệ sĩ", "sân khấu"], "score": 1.0},
+                {"keywords": ["ca sĩ", "âm nhạc"], "score": 1.0},
+                {"keywords": ["điện ảnh", "diễn viên"], "score": 1.0},
+                {"keywords": ["lễ hội", "di sản"], "score": 0.8},
+            ],
+        },
     },
     "Pháp luật": {
         "keywords": {
@@ -155,6 +246,19 @@ TOPIC_CONFIG = {
             "viện kiểm sát nhân dân": 3.0, "khởi tố vụ án": 3.0,
             "xét xử sơ thẩm": 3.0, "bản án tử hình": 3.0, "tư vấn pháp luật": 3.0,
             "quy định pháp luật": 3.0, "tranh chấp dân sự": 3.0,
+        },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["tòa án nhân dân", "khởi tố vụ án"], "score": 1.8},
+                {"phrases": ["vi phạm pháp luật", "tư vấn pháp luật"], "score": 1.5},
+                {"phrases": ["xét xử sơ thẩm", "bản án tử hình"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["bị cáo", "xét xử"], "score": 1.0},
+                {"keywords": ["luật sư", "tòa án"], "score": 1.2},
+                {"keywords": ["điều tra", "khởi tố"], "score": 1.0},
+                {"keywords": ["chứng cứ", "hình sự"], "score": 0.8},
+            ],
         },
     },
     "Du lịch": {
@@ -174,6 +278,19 @@ TOPIC_CONFIG = {
             "du lịch trải nghiệm": 3.0, "khu nghỉ dưỡng": 3.0, "đặt vé máy bay": 3.0,
             "hành trình khám phá": 3.0, "du lịch bụi": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["tour du lịch", "danh lam thắng cảnh"], "score": 1.8},
+                {"phrases": ["du lịch sinh thái", "điểm đến du lịch"], "score": 1.5},
+                {"phrases": ["hành trình khám phá", "du lịch trải nghiệm"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["du khách", "khách sạn"], "score": 1.0},
+                {"keywords": ["tour", "hành trình"], "score": 1.0},
+                {"keywords": ["resort", "nghỉ dưỡng"], "score": 1.2},
+                {"keywords": ["vé máy bay", "chuyến bay"], "score": 0.8},
+            ],
+        },
     },
     "Xe": {
         "keywords": {
@@ -192,6 +309,19 @@ TOPIC_CONFIG = {
             "xe điện thông minh": 3.0, "đại lý ủy quyền": 3.0, "công nghệ ô tô": 3.0,
             "an toàn giao thông": 3.0, "nội thất xe hơi": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["động cơ turbo", "hộp số tự động"], "score": 1.8},
+                {"phrases": ["xe điện thông minh", "an toàn giao thông"], "score": 1.5},
+                {"phrases": ["công nghệ ô tô", "nội thất xe hơi"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["ô tô", "động cơ"], "score": 1.0},
+                {"keywords": ["xe máy", "xe hơi"], "score": 1.0},
+                {"keywords": ["sedan", "suv"], "score": 1.2},
+                {"keywords": ["bảo dưỡng", "phụ tùng"], "score": 0.8},
+            ],
+        },
     },
     "Đời sống": {
         "keywords": {
@@ -209,6 +339,19 @@ TOPIC_CONFIG = {
             "hôn nhân gia đình": 3.0, "cuộc sống hàng ngày": 3.0,
             "chăm sóc gia đình": 3.0, "trang trí nhà cửa": 3.0,
         },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["nuôi dạy con", "đời sống gia đình"], "score": 1.8},
+                {"phrases": ["hôn nhân gia đình", "cuộc sống hàng ngày"], "score": 1.5},
+                {"phrases": ["chi tiêu tiết kiệm", "mua sắm online"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["gia đình", "vợ chồng"], "score": 1.0},
+                {"keywords": ["con cái", "nuôi dạy"], "score": 1.0},
+                {"keywords": ["mua sắm", "tiêu dùng"], "score": 0.8},
+                {"keywords": ["đám cưới", "hôn nhân"], "score": 1.2},
+            ],
+        },
     },
     "Bất động sản": {
         "keywords": {
@@ -224,6 +367,19 @@ TOPIC_CONFIG = {
             "khu đô thị mới": 3.0, "dự án bất động sản": 3.0,
             "sổ đỏ chính chủ": 3.0, "giá bất động sản": 3.0,
             "căn hộ chung cư": 3.0, "đất nền dự án": 3.0,
+        },
+        "context_boost": {
+            "phrase_bonus": [
+                {"phrases": ["chung cư cao cấp", "dự án bất động sản"], "score": 1.8},
+                {"phrases": ["mua bán nhà đất", "khu đô thị mới"], "score": 1.5},
+                {"phrases": ["sổ đỏ chính chủ", "căn hộ chung cư"], "score": 1.3},
+            ],
+            "keyword_combo": [
+                {"keywords": ["chung cư", "căn hộ"], "score": 1.0},
+                {"keywords": ["đất nền", "sổ đỏ"], "score": 1.2},
+                {"keywords": ["môi giới", "bất động sản"], "score": 1.0},
+                {"keywords": ["quy hoạch", "chủ đầu tư"], "score": 0.8},
+            ],
         },
     },
 }

@@ -195,77 +195,18 @@ class TopicAnalyzer:
         keyword_set = set(keyword_matches)
         phrase_set = set(phrase_matches)
 
-        if topic == "Giáo dục":
-            if "học trực tuyến" in phrase_set or "bài giảng online" in phrase_set:
-                boost += 1.8
-            if "lớp học" in phrase_set and "bài giảng" in phrase_set:
-                boost += 1.2
+        config = TOPIC_CONFIG.get(topic, {}).get("context_boost")
+        if not config:
+            return boost
 
-        if topic == "Công nghệ":
-            if "trí tuệ nhân tạo"  in phrase_set or "cơ sở dữ liệu" in phrase_set:
-                boost += 1.8
-            if "phần mềm" in keyword_set and "hệ thống" in keyword_set:
-                boost += 1.0
+        for rule in config.get("phrase_bonus", []):
+            if any(p in phrase_set for p in rule.get("phrases", [])):
+                boost += rule.get("score", 0.0)
 
-        if topic == "Sức khỏe":
-            if "khám bệnh" in phrase_set or "phác đồ điều trị" in phrase_set:
-                boost += 1.8
-            if "bác sĩ" in keyword_set and "bệnh viện" in keyword_set:
-                boost += 1.0
-
-        if topic == "Thể thao":
-            if "trận đấu" in phrase_set or "ghi bàn" in phrase_set:
-                boost += 1.8
-            if "cầu thủ" in keyword_set and "huấn luyện viên" in keyword_set:
-                boost += 1.0
-
-        if topic == "Kinh tế":
-            if "thị trường chứng khoán" in phrase_set or "tăng trưởng kinh tế" in phrase_set:
-                boost += 1.8
-            if "đầu tư" in keyword_set and "lãi suất" in keyword_set:
-                boost += 1.0
-
-        if topic == "Ẩm thực":
-            if "ẩm thực đường phố" in phrase_set or "công thức nấu ăn" in phrase_set:
-                boost += 1.8
-            if "đầu bếp" in keyword_set and "món ăn" in keyword_set:
-                boost += 1.0
-
-        if topic == "Văn hóa - Nghệ thuật":
-            if "triển lãm nghệ thuật" in phrase_set or "di sản văn hóa" in phrase_set:
-                boost += 1.8
-            if "nghệ sĩ" in keyword_set and "sân khấu" in keyword_set:
-                boost += 1.0
-
-        if topic == "Pháp luật":
-            if "tòa án nhân dân" in phrase_set or "khởi tố vụ án" in phrase_set:
-                boost += 1.8
-            if "bị cáo" in keyword_set and "xét xử" in keyword_set:
-                boost += 1.0
-
-        if topic == "Du lịch":
-            if "tour du lịch" in phrase_set or "danh lam thắng cảnh" in phrase_set:
-                boost += 1.8
-            if "du khách" in keyword_set and "khách sạn" in keyword_set:
-                boost += 1.0
-
-        if topic == "Xe":
-            if "động cơ turbo" in phrase_set or "hộp số tự động" in phrase_set:
-                boost += 1.8
-            if "ô tô" in keyword_set and "động cơ" in keyword_set:
-                boost += 1.0
-
-        if topic == "Đời sống":
-            if "nuôi dạy con" in phrase_set or "đời sống gia đình" in phrase_set:
-                boost += 1.8
-            if "gia đình" in keyword_set and "vợ chồng" in keyword_set:
-                boost += 1.0
-
-        if topic == "Bất động sản":
-            if "chung cư cao cấp" in phrase_set or "dự án bất động sản" in phrase_set:
-                boost += 1.8
-            if "chung cư" in keyword_set and "căn hộ" in keyword_set:
-                boost += 1.0
+        for rule in config.get("keyword_combo", []):
+            combo_keywords = rule.get("keywords", [])
+            if len(combo_keywords) >= 2 and all(k in keyword_set for k in combo_keywords):
+                boost += rule.get("score", 0.0)
 
         return boost
 
