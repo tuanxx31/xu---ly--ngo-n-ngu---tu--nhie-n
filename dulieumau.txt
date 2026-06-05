@@ -1,0 +1,126 @@
+Đời sống
+
+Đoạn test:
+
+Trong cuộc sống hằng ngày, nhiều gia đình phải cân đối giữa chi tiêu, mua sắm và chăm sóc con cái. Các bậc phụ huynh quan tâm đến việc nuôi dạy con, giữ gìn hạnh phúc hôn nhân và xây dựng môi trường sống lành mạnh. Những mẹo tiết kiệm, dọn dẹp nhà cửa và chăm sóc gia đình luôn được nhiều người quan tâm.
+
+Kết quả mong muốn: Đời sống
+
+Bất động sản
+
+Đoạn test:
+
+Thị trường bất động sản đang thu hút sự chú ý của nhiều nhà đầu tư nhờ các dự án căn hộ chung cư và khu đô thị mới. Người mua quan tâm đến vị trí, diện tích, giá đất, pháp lý và sổ đỏ chính chủ. Các môi giới cho rằng những dự án có chủ đầu tư uy tín và quy hoạch rõ ràng sẽ có khả năng tăng giá tốt hơn.
+
+Kết quả mong muốn: Bất động sản
+
+2. Mức trung bình — có từ giao nhau
+Công nghệ hoặc Giáo dục, nhưng mong muốn là Giáo dục
+
+Đoạn test:
+
+Nhà trường triển khai một hệ thống phần mềm mới để quản lý bài giảng, điểm số và tài liệu học tập của sinh viên. Giáo viên có thể tạo bài kiểm tra trực tuyến, theo dõi tiến độ học tập và gửi thông báo cho từng lớp học. Mặc dù có yếu tố công nghệ, nội dung chính vẫn xoay quanh hoạt động giảng dạy và quản lý giáo dục.
+
+Kết quả mong muốn: Giáo dục
+
+Công nghệ hoặc Sức khỏe, nhưng mong muốn là Sức khỏe
+
+Đoạn test:
+
+Bệnh viện sử dụng hệ thống lưu trữ dữ liệu để quản lý hồ sơ bệnh nhân và kết quả xét nghiệm. Bác sĩ có thể theo dõi triệu chứng, lịch sử điều trị và đơn thuốc của từng người bệnh dễ dàng hơn. Dù có nhắc đến dữ liệu và hệ thống, nội dung chính vẫn là khám bệnh, điều trị và chăm sóc sức khỏe.
+
+Kết quả mong muốn: Sức khỏe
+
+Du lịch hoặc Văn hóa, chấp nhận cả hai
+
+Đoạn test:
+
+Du khách đến tham quan các di tích lịch sử, bảo tàng và lễ hội văn hóa truyền thống tại địa phương. Trong chuyến đi, họ được nghe hướng dẫn viên giới thiệu về di sản, phong tục và những câu chuyện gắn với vùng đất này. Nội dung vừa có yếu tố du lịch, vừa có yếu tố văn hóa nghệ thuật.
+
+Kết quả mong muốn: Du lịch hoặc Văn hóa - Nghệ thuật
+
+Pháp luật hoặc Bất động sản, mong muốn là Bất động sản
+
+Đoạn test:
+
+Người mua căn hộ cần kiểm tra pháp lý dự án, sổ hồng, quy hoạch và uy tín của chủ đầu tư trước khi ký hợp đồng. Một số dự án bất động sản có giá hấp dẫn nhưng vẫn cần xem xét kỹ quyền sở hữu và tiến độ xây dựng. Nội dung có yếu tố pháp luật, nhưng trọng tâm vẫn là mua bán nhà đất và căn hộ chung cư.
+
+Kết quả mong muốn: Bất động sản
+
+Kinh tế hoặc Bất động sản, chấp nhận cả hai
+
+Đoạn test:
+
+Thị trường bất động sản chịu ảnh hưởng lớn từ lãi suất ngân hàng, dòng vốn đầu tư và chính sách tín dụng. Khi lãi suất tăng, nhiều nhà đầu tư có xu hướng thận trọng hơn trong việc mua đất nền, căn hộ và nhà phố. Đoạn này có cả tín hiệu kinh tế lẫn bất động sản nên nếu app trả về top 2 gồm hai nhóm này là hợp lý.
+
+Kết quả mong muốn: Bất động sản hoặc Kinh tế
+
+3. Mức khó — dễ gây nhầm, dùng để kiểm tra độ ổn định
+Đời sống, Sức khỏe hoặc Ẩm thực, mong muốn là Đời sống
+
+Đoạn test:
+
+Một gia đình trẻ đang thay đổi thói quen sinh hoạt để có cuộc sống cân bằng hơn. Họ lên kế hoạch chi tiêu, mua sắm thực phẩm, chuẩn bị bữa ăn lành mạnh và dành thời gian tập thể dục cùng nhau. Dù có nhắc đến dinh dưỡng và sức khỏe, nội dung chính vẫn là nếp sống, gia đình và sinh hoạt hằng ngày.
+
+Kết quả mong muốn: Đời sống
+
+Xe hoặc Công nghệ, mong muốn là Xe
+
+Đoạn test:
+
+Các hãng xe hiện nay tích hợp nhiều công nghệ thông minh vào ô tô điện nhằm hỗ trợ người lái an toàn hơn. Hệ thống cảm biến, phần mềm điều khiển và dữ liệu vận hành giúp xe tự động cảnh báo khi có nguy cơ va chạm. Tuy có nhiều từ liên quan đến công nghệ, chủ thể chính vẫn là xe điện, lái xe và an toàn giao thông.
+
+Kết quả mong muốn: Xe
+
+Kinh tế hoặc Công nghệ, chấp nhận cả hai
+
+Đoạn test:
+
+Một startup công nghệ vừa gọi vốn thành công để phát triển nền tảng trí tuệ nhân tạo phục vụ doanh nghiệp. Khoản đầu tư này giúp công ty mở rộng đội ngũ lập trình, nâng cấp hệ thống dữ liệu và triển khai sản phẩm ra thị trường. Đoạn này có cả tín hiệu về công nghệ, đầu tư, doanh nghiệp và kinh doanh.
+
+Kết quả mong muốn: Công nghệ hoặc Kinh tế
+
+Ẩm thực, Du lịch hoặc Văn hóa, chấp nhận top 2
+
+Đoạn test:
+
+Lễ hội ẩm thực vùng miền thu hút hàng nghìn du khách đến tham quan và trải nghiệm văn hóa địa phương. Các gian hàng giới thiệu món ăn truyền thống, đặc sản, gia vị và cách chế biến độc đáo của từng vùng. Nội dung có thể nghiêng về ẩm thực, nhưng cũng chứa nhiều tín hiệu du lịch và văn hóa.
+
+Kết quả mong muốn: Ẩm thực / Du lịch / Văn hóa - Nghệ thuật
+
+Pháp luật hoặc Kinh tế, mong muốn là Pháp luật
+
+Đoạn test:
+
+Doanh nghiệp bị điều tra vì có dấu hiệu vi phạm quy định về thuế và báo cáo tài chính. Cơ quan chức năng đã thu thập chứng cứ, làm việc với kế toán và chuyển hồ sơ cho viện kiểm sát xem xét. Mặc dù có các từ như doanh nghiệp, thuế và tài chính, trọng tâm của đoạn là điều tra, vi phạm và xử lý theo pháp luật.
+
+Kết quả mong muốn: Pháp luật
+
+4. Một số đoạn rất dài để test thực tế hơn
+Đoạn dài 1 — Công nghệ
+
+Trong bối cảnh chuyển đổi số, nhiều doanh nghiệp đang đầu tư mạnh vào hệ thống phần mềm, dữ liệu lớn và trí tuệ nhân tạo. Các nền tảng điện toán đám mây giúp công ty lưu trữ thông tin, triển khai API và mở rộng dịch vụ nhanh hơn so với hạ tầng truyền thống. Bên cạnh đó, bảo mật thông tin và an ninh mạng cũng trở thành vấn đề quan trọng khi lượng dữ liệu người dùng ngày càng tăng. Đội ngũ lập trình viên phải liên tục tối ưu thuật toán, nâng cấp website và phát triển ứng dụng để đáp ứng nhu cầu thực tế.
+
+Kết quả mong muốn: Công nghệ
+
+Đoạn dài 2 — Giáo dục
+
+Việc học trực tuyến đang trở thành một phần quan trọng trong chương trình đào tạo của nhiều trường đại học. Sinh viên có thể xem bài giảng online, làm bài kiểm tra, nộp bài tập và trao đổi với giáo viên thông qua nền tảng số. Tuy nhiên, để nâng cao hiệu quả học tập, nhà trường cần kết hợp giữa phương pháp giảng dạy truyền thống và công nghệ hỗ trợ. Các hoạt động nghiên cứu, phát triển kỹ năng và đánh giá điểm số vẫn giữ vai trò quan trọng trong quá trình đào tạo.
+
+Kết quả mong muốn: Giáo dục
+
+Đoạn dài 3 — Bất động sản
+
+Nhiều người mua nhà hiện nay không chỉ quan tâm đến giá bán mà còn chú ý đến pháp lý, quy hoạch và tiện ích xung quanh dự án. Một căn hộ chung cư có vị trí tốt, chủ đầu tư uy tín và sổ hồng rõ ràng thường được đánh giá cao hơn trên thị trường bất động sản. Bên cạnh đó, các yếu tố như diện tích, số phòng ngủ, tầng căn hộ và khả năng cho thuê cũng ảnh hưởng đến quyết định mua bán. Nhà đầu tư cần xem xét kỹ dòng tiền, lãi suất ngân hàng và tiềm năng tăng giá trước khi xuống tiền.
+
+Kết quả mong muốn: Bất động sản
+
+Đoạn dài 4 — Sức khỏe
+
+Một lối sống lành mạnh không chỉ phụ thuộc vào việc ăn uống mà còn liên quan đến giấc ngủ, vận động và tinh thần. Bác sĩ khuyến cáo mỗi người nên duy trì chế độ ăn cân bằng, uống đủ nước, tập thể dục thường xuyên và đi khám bệnh định kỳ. Khi xuất hiện các triệu chứng bất thường như đau kéo dài, mệt mỏi hoặc huyết áp tăng, người bệnh cần đến cơ sở y tế để được xét nghiệm và điều trị. Việc tự ý dùng thuốc khi chưa có chỉ định có thể gây ảnh hưởng xấu đến sức khỏe.
+
+Kết quả mong muốn: Sức khỏe
+
+Đoạn dài 5 — Khó, nhiều chủ đề trộn
+
+Một khu đô thị mới được xây dựng gần bãi biển với hệ thống khách sạn, nhà hàng, khu vui chơi và căn hộ nghỉ dưỡng. Dự án thu hút nhiều nhà đầu tư nhờ tiềm năng khai thác du lịch, cho thuê phòng và tăng giá bất động sản trong tương lai. Tuy nhiên, người mua vẫn cần kiểm tra pháp lý, quy hoạch và uy tín của chủ đầu tư trước khi ký hợp đồng. Đoạn này có cả du lịch, bất động sản, kinh tế và pháp luật.
